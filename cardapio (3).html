@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="pt-BR"><head><meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#080605"><meta name="robots" content="noindex,nofollow">
+<title>Cardápio</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Oswald:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#080605;--ln:#3b2a1d;--acc:#ff6a1a;--am:#ffb21a;--t:#f7efe6;--m:#a8998a;
+ --hd:"Anton","Impact","Haettenschweiler","Arial Narrow Bold",sans-serif;--tx:"Oswald","Arial Narrow","Roboto Condensed",system-ui,sans-serif}
+*{box-sizing:border-box}html{scroll-behavior:smooth;-webkit-tap-highlight-color:transparent}
+body{margin:0;background:var(--bg);color:var(--t);font:17px/1.35 var(--tx);padding:env(safe-area-inset-top) 0 env(safe-area-inset-bottom);overflow-x:hidden}
+body::before{content:"";position:fixed;inset:0;z-index:-1;pointer-events:none;background:
+ radial-gradient(70% 40% at 0 32%,color-mix(in srgb,var(--acc) 17%,transparent),transparent 70%),
+ radial-gradient(70% 40% at 100% 32%,color-mix(in srgb,var(--acc) 17%,transparent),transparent 70%),
+ radial-gradient(90% 35% at 50% 110%,color-mix(in srgb,var(--acc) 24%,transparent),transparent 70%)}
+
+/* ---- topo: logo + decoração (pontos e "brasas" laterais) ---- */
+#top{position:relative;overflow:hidden;padding-bottom:6px}
+.dots{position:absolute;top:16px;width:110px;height:110px;pointer-events:none;background:radial-gradient(circle,var(--am) 0 3px,transparent 3.6px) 0 0/22px 22px}
+.dots.l{left:12px}.dots.r{right:12px}
+.spl{position:absolute;top:150px;width:120px;height:360px;pointer-events:none;opacity:.55;
+ background:radial-gradient(circle,var(--acc) 1.2px,transparent 1.9px) 0 0/8px 8px,radial-gradient(circle,var(--am) 1px,transparent 1.6px) 3px 3px/13px 13px;
+ -webkit-mask-image:radial-gradient(closest-side,#000 20%,transparent 100%);mask-image:radial-gradient(closest-side,#000 20%,transparent 100%)}
+.spl.l{left:-62px}.spl.r{right:-62px}
+@media(max-width:420px){.dots{width:66px;height:66px;top:14px}.dots.l{left:8px}.dots.r{right:8px}}
+.hd{position:relative;z-index:1;max-width:720px;margin:auto;padding:24px 16px 4px;text-align:center}
+.logo{width:124px;height:124px;margin:0 auto;border-radius:50%;background:#000;border:4px solid #fff;display:grid;place-items:center;overflow:hidden;font-size:56px;
+ box-shadow:0 0 0 4px var(--acc),0 0 30px color-mix(in srgb,var(--acc) 60%,transparent)}
+.logo img{width:100%;height:100%;object-fit:cover}
+h1{margin:16px 0 2px;font:400 clamp(28px,8.5vw,40px)/1.05 var(--hd);letter-spacing:.04em;text-transform:uppercase}
+.rule{display:flex;align-items:center;justify-content:center;gap:10px;margin:8px 0 2px}.rule i{width:64px;height:2px;background:var(--acc)}.rule b{width:8px;height:8px;background:var(--acc);transform:rotate(45deg)}
+.sub{margin:4px 0 0;color:var(--m);font:500 13px var(--tx);letter-spacing:.35em;text-transform:uppercase}
+
+/* ---- Happy Hour: destaque ---- */
+.hero{position:relative;z-index:1;max-width:720px;margin:auto;padding:14px 16px 4px}
+.ttl{display:flex;justify-content:center;align-items:center;gap:8px}
+.ttlw{transform:rotate(-4deg)}
+.ttlw span{display:block;font:400 clamp(60px,20vw,100px)/.86 var(--hd);text-transform:uppercase;text-shadow:0 4px 0 #0008}
+.ttlw .w{color:#fff}.ttlw .o{color:var(--acc)}
+.bdg{flex:0 0 auto;width:clamp(86px,25vw,108px);aspect-ratio:1;border-radius:50%;background:radial-gradient(circle at 50% 30%,#ffc94f,#ff980f);color:#fff;display:grid;place-content:center;text-align:center;line-height:.95;
+ outline:2px dashed #ffd97a99;outline-offset:3px;transform:rotate(-4deg);font-family:var(--hd);text-shadow:0 2px 0 #0006}
+.bdg small{font-size:clamp(16px,5vw,22px)}.bdg b{font-weight:400;font-size:clamp(28px,9vw,40px)}
+.hbox{margin:16px 0 4px;border:1.5px solid var(--am);border-radius:10px;padding:10px 12px;text-align:center;background:#0009;font:500 clamp(14px,4.2vw,18px)/1.25 var(--tx);text-transform:uppercase}
+.hbox em{font-style:normal;color:var(--acc);white-space:nowrap}
+.cnt{margin-top:3px;font-size:.85em;color:#ffd27a;letter-spacing:.04em}
+.hbox.fim{border-color:#ff4a3f;background:#4a0f0c99}.hbox.fim .cnt{color:#ff9087;font-weight:700}
+.faixa{margin:16px 0 4px;padding:13px 14px;border:1.5px dashed #ffb21a99;border-radius:12px;background:#1b120b;text-align:center;font:500 15px/1.3 var(--tx)}
+.faixa b{display:block;color:var(--am);font-size:18px;text-transform:uppercase;letter-spacing:.02em}.faixa span{color:var(--m)}
+
+/* ---- categorias ---- */
+nav{position:sticky;top:0;z-index:5;display:flex;gap:8px;overflow-x:auto;padding:10px 12px;margin-top:8px;background:#080605e8;-webkit-backdrop-filter:blur(12px);backdrop-filter:blur(12px);border-bottom:1px solid var(--ln);scrollbar-width:none}
+nav::-webkit-scrollbar{display:none}
+nav a{flex:0 0 auto;padding:8px 15px;border-radius:8px;background:#1a120c;border:1px solid var(--ln);color:var(--t);text-decoration:none;font:500 14px var(--tx);text-transform:uppercase;letter-spacing:.03em}
+nav a.hhp{border-color:var(--am);color:var(--am)}
+nav a.on{background:var(--acc);border-color:var(--acc);color:#1b0f06}
+nav a.hhp.on{background:linear-gradient(180deg,#ffc13a,#ff9a1a);border-color:var(--am)}
+main{max-width:720px;margin:auto;padding:4px 14px 30px}
+section{scroll-margin-top:70px;padding:18px 0 14px;border-top:1px solid color-mix(in srgb,var(--acc) 80%,transparent)}
+section:first-child{border-top:0}
+.sec{display:grid;grid-template-columns:60px 1fr;gap:10px;align-items:start}
+.fig{font-size:46px;line-height:1;text-align:center;padding-top:10px;filter:drop-shadow(0 4px 10px #000)}
+@media(max-width:380px){.sec{grid-template-columns:1fr}.fig{display:none}}
+h2{display:inline-block;margin:0 0 4px;padding:7px 38px 7px 14px;font:400 clamp(22px,6.5vw,28px)/1.05 var(--hd);letter-spacing:.03em;text-transform:uppercase;color:#fff;
+ background:linear-gradient(180deg,color-mix(in srgb,var(--acc),#fff 8%),color-mix(in srgb,var(--acc),#000 20%));
+ clip-path:polygon(0 0,100% 0,calc(100% - 16px) 50%,100% 100%,0 100%)}
+section.hhs{margin-top:12px;padding:16px 12px 12px;border:1px solid #ffb21a66;border-radius:18px;background:linear-gradient(180deg,#ffb21a17,transparent 70%)}
+.hhs h2{background:linear-gradient(180deg,#ffc83f,#ff9a1a);color:#1b0f06}
+.it{display:flex;align-items:center;padding:7px 0;font:500 clamp(16px,4.6vw,19px)/1.2 var(--tx);text-transform:uppercase}
+.it img{flex:0 0 46px;width:46px;height:46px;margin-right:10px;border-radius:10px;object-fit:cover;background:#2a221b}
+.nm{min-width:0;color:#fff}
+.ld{flex:1 1 12px;min-width:12px;margin:0 7px;border-bottom:2px dotted #ffffff4d;transform:translateY(5px)}
+.pr{white-space:nowrap;display:flex;align-items:baseline;gap:7px;font-weight:700;color:var(--acc)}
+.pr s{font-weight:400;font-size:.72em;color:var(--m)}.pr .hp{color:var(--am)}
+.load{color:var(--m);text-align:center;padding:40px 0}
+footer{text-align:center;color:var(--m);font-size:13px;padding:0 16px 30px}
+</style></head><body>
+<div id="top"></div><nav id="cats"></nav>
+<main id="m"><p class="load">Carregando cardápio…</p></main>
+<footer>Imagens meramente ilustrativas.</footer>
+<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
+<script>
+firebase.initializeApp({apiKey:"AIzaSyA0JWR3EyD6WnPLkycruhW9k0f6_kL8HK8",authDomain:"espetinho-pedidos-jp.firebaseapp.com",projectId:"espetinho-pedidos-jp",storageBucket:"espetinho-pedidos-jp.firebasestorage.app",messagingSenderId:"825804185421",appId:"1:825804185421:web:f6c901305b62abab232104"});
+const db=firebase.firestore();db.settings({experimentalForceLongPolling:true});
+/* ordem das categorias no cardápio; as que não estiverem aqui vão pro final, em ordem alfabética (o Happy Hour sempre vem antes de todas) */
+const ORDEM=["Espetinhos","Pão de alho","Pra beliscar","Pastéis","Caldinhos","Dindin gourmet","Cervejas 600ml","Sucos","Cachaças 300ml","Doses"];
+/* ícone grande ao lado de cada categoria (procura a palavra no nome da categoria) */
+const EMO=[["happy","🍻"],["espet","🍢"],["pão","🥖"],["pao","🥖"],["belisc","🍟"],["pastel","🥟"],["caldinh","🍲"],["dindin","🍨"],["cerveja","🍺"],["suco","🍹"],["cacha","🥃"],["dose","🥃"]];
+const emo=c=>{c=c.toLowerCase();const e=EMO.find(([k])=>c.includes(k));return e?e[1]:"🍽️"};
+const TTL=5*60e3,K="cardapio_v2",$=s=>document.querySelector(s),
+ esc=s=>String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c])),
+ money=n=>n.toLocaleString("pt-BR",{style:"currency",currency:"BRL"});
+let C=null;try{C=JSON.parse(localStorage.getItem(K))}catch(e){}
+
+/* ===== HAPPY HOUR (mesma regra do app dos garçons) ===== */
+const HHCAT="Happy Hour";let hhEst=null;
+function hhInfo(c){if(!c||c.hhOn===false)return null;
+ const m=s=>{const[a,b]=String(s).split(":");return(+a||0)*60+(+b||0)},a=m(c.hhIni||"17:00"),b=m(c.hhFim||"20:00"),t=new Date(),n=t.getHours()*60+t.getMinutes();
+ if(a===b)return null;
+ const md=x=>((x%1440)+1440)%1440;
+ return{on:a<b?n>=a&&n<b:n>=a||n<b,ini:c.hhIni||"17:00",fim:c.hhFim||"20:00",rest:md(b-n),ate:md(a-n),desde:md(n-b)}}
+const hf=t=>{const[a,b]=String(t).split(":");return(+a||0)+"h"+(+b?String(+b).padStart(2,"0"):"")},
+ tem=d=>d.prods.filter(p=>p.hh&&p.hhPreco>0),
+ /* estado do Happy Hour: x = sem Happy Hour | on / on! (últimos 15 min) | fim = já acabou hoje | pre = ainda não começou */
+ estado=(h,hp)=>!h||!hp.length?"x":h.on?(h.rest<=15?"on!":"on"):(h.desde<h.ate?"fim":"pre"),
+ cont=r=>r<=15?"⚠️ Acabando · faltam "+r+" min":"Acaba em "+(r>=60?Math.floor(r/60)+"h"+(r%60?" "+(r%60)+"min":""):r+" min");
+
+function hero(d,h,hp){
+ const e=estado(h,hp);if(e==="x")return"";
+ if(h.on){const off=Math.max(0,...hp.map(p=>Math.round((1-p.hhPreco/p.preco)*100)));
+  return `<div class="hero"><div class="ttl"><div class="ttlw"><span class="w">Happy</span><span class="o">Hour</span></div>${off>=1?`<div class="bdg"><small>ATÉ</small><b>${off}%</b></div>`:""}</div>
+<div class="hbox${h.rest<=15?" fim":""}"><div>Promoção todos os dias das <em>${hf(h.ini)} às ${hf(h.fim)}</em></div><div class="cnt" id="hhc">${cont(h.rest)}</div></div></div>`}
+ return e==="fim"
+  ?`<div class="hero"><div class="faixa"><b>🍻 O Happy Hour de hoje já acabou</b><span>Os preços voltaram ao normal · volta amanhã das ${hf(h.ini)} às ${hf(h.fim)}</span></div></div>`
+  :`<div class="hero"><div class="faixa"><b>🍻 O Happy Hour ainda não começou</b><span>Começa hoje às ${hf(h.ini)} · vai até ${hf(h.fim)}</span></div></div>`}
+
+function desenhar(d){
+ const h=hhInfo(d.cfg),hp=tem(d),on=!!(h&&h.on&&hp.length);hhEst=estado(h,hp);
+ document.documentElement.style.setProperty("--acc",d.cfg.cor||"#ff6a1a");
+ document.title=(d.cfg.nome||"Espetinhos")+" · Cardápio";
+ $("#top").innerHTML=`<i class="dots l"></i><i class="dots r"></i><i class="spl l"></i><i class="spl r"></i><div class="hd"><div class="logo">${d.cfg.logo?`<img src="${d.cfg.logo}" alt="">`:"🔥"}</div><h1>${esc(d.cfg.nome||"Espetinhos")}</h1><div class="rule"><i></i><b></b><i></i></div><p class="sub">Cardápio</p></div>${hero(d,h,hp)}`;
+ const g={};d.prods.forEach(p=>(g[p.cat||"Outros"]=g[p.cat||"Outros"]||[]).push(p));
+ const cats=Object.keys(g).sort((a,b)=>{const i=ORDEM.indexOf(a),j=ORDEM.indexOf(b);return(i<0?99:i)-(j<0?99:j)||a.localeCompare(b)});
+ cats.forEach(c=>g[c].sort((a,b)=>a.nome.localeCompare(b.nome)));
+ if(on){g[HHCAT]=hp.slice().sort((a,b)=>a.nome.localeCompare(b.nome));cats.unshift(HHCAT)}   /* Happy Hour sempre em primeiro */
+ $("#cats").innerHTML=cats.map((c,i)=>`<a href="#c${i}" data-i="${i}"${c===HHCAT?' class="hhp"':""}>${c===HHCAT?"🍻 ":""}${esc(c)}</a>`).join("");
+ $("#m").innerHTML=cats.map((c,i)=>`<section id="c${i}"${c===HHCAT?' class="hhs"':""}><div class="sec"><div class="fig" aria-hidden="true">${emo(c)}</div><div><h2>${esc(c)}</h2>${g[c].map(p=>{const f=p.fv&&d.fotos[p.id],hh=on&&p.hh&&p.hhPreco>0;
+  return `<div class="it">${f?`<img src="${f.img}" alt="${esc(p.nome)}" width="46" height="46">`:""}<span class="nm">${esc(p.nome)}</span><i class="ld"></i><span class="pr">${hh?`<s>${money(p.preco)}</s><b class="hp">${money(p.hhPreco)}</b>`:money(p.preco)}</span></div>`}).join("")}</div></div></section>`).join("")||'<p class="load">Cardápio indisponível no momento.</p>';
+ spy()}
+
+let io;
+function spy(){io&&io.disconnect();
+ io=new IntersectionObserver(es=>es.forEach(e=>{if(!e.isIntersecting)return;
+  document.querySelectorAll("#cats a").forEach(a=>a.classList.toggle("on",a.dataset.i===e.target.id.slice(1)));
+  const a=document.querySelector("#cats a.on");a&&a.scrollIntoView({inline:"center",block:"nearest"})}),{rootMargin:"-30% 0px -65% 0px"});
+ document.querySelectorAll("section").forEach(s=>io.observe(s))}
+
+async function carregar(){
+ if(C&&Date.now()-C.t<TTL)return desenhar(C);   /* cache recente: não gasta leitura no servidor */
+ if(C)desenhar(C);                              /* mostra o que tem enquanto atualiza */
+ try{
+  const[cf,ps]=await Promise.all([db.collection("config").doc("app").get(),db.collection("produtos").get()]);
+  const cfg=cf.exists?cf.data():{},prods=ps.docs.map(d=>({id:d.id,...d.data()})).filter(p=>p.ativo!==false);
+  let fotos=(C&&C.fotos)||{};
+  if(prods.some(p=>p.fv&&(!fotos[p.id]||fotos[p.id].v!==p.fv))){   /* só baixa as fotos se alguma mudou */
+   fotos={};(await db.collection("fotos").get()).forEach(d=>fotos[d.id]={v:d.data().ts,img:d.data().img})}
+  C={t:Date.now(),cfg:{nome:cfg.nome,cor:cfg.cor,logo:cfg.logo,hhOn:cfg.hhOn,hhIni:cfg.hhIni,hhFim:cfg.hhFim},prods:prods.map(({id,nome,preco,cat,fv,hh,hhPreco})=>({id,nome,preco,cat,fv,hh:!!hh,hhPreco})),fotos};
+  try{localStorage.setItem(K,JSON.stringify(C))}catch(e){}
+  desenhar(C)}
+ catch(e){if(!C)$("#m").innerHTML='<p class="load">Não foi possível carregar o cardápio. Confira a internet e abra de novo.</p>'}}
+addEventListener("visibilitychange",()=>{if(!document.hidden)carregar()});
+/* a cada 30s: se o Happy Hour começou/acabou (ou entrou nos últimos 15 min), redesenha; senão só atualiza o contador */
+setInterval(()=>{if(!C)return;const h=hhInfo(C.cfg),e=estado(h,tem(C));
+ if(e!==hhEst)desenhar(C);else if(e[0]==="o"){const c=$("#hhc");if(c)c.textContent=cont(h.rest)}},30000);
+carregar();
+</script></body></html>
