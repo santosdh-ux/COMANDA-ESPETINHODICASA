@@ -1,0 +1,562 @@
+<!DOCTYPE html>
+<html lang="pt-BR"><head><meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#14100d"><meta name="robots" content="noindex,nofollow">
+<meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="black"><meta name="apple-mobile-web-app-title" content="Espetinhos">
+<link rel="manifest" href="manifest.json"><link rel="icon" href="icon-192.png"><link rel="apple-touch-icon" href="icon-192.png">
+<title>Espetinhos</title>
+<style>
+:root{--bg:#14100d;--p:#1e1813;--p2:#2a221b;--ln:#3b3027;--acc:#ff6a1a;--g:#35c46e;--r:#e5483f;--t:#f7efe6;--m:#a8998a}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--t);font:16px/1.4 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;padding:env(safe-area-inset-top) 0 env(safe-area-inset-bottom)}
+#splash{position:fixed;inset:0;z-index:50;display:grid;place-content:center;gap:14px;text-align:center;background:var(--bg)}#splash.off{display:none}
+.mark{display:grid;place-items:center;width:64px;height:64px;margin:auto;border-radius:18px;background:linear-gradient(145deg,color-mix(in srgb,var(--acc),#fff 35%),var(--acc));font-size:32px;overflow:hidden}.mark img{width:100%;height:100%;object-fit:cover}
+header{position:sticky;top:0;z-index:5;display:flex;align-items:center;gap:10px;padding:10px 14px;background:#14100df2;border-bottom:3px solid var(--acc)}header .mark{width:38px;height:38px;font-size:20px;border-radius:12px;margin:0}header b{font-size:18px}.sp{flex:1}
+nav{display:flex;gap:6px;overflow-x:auto;padding:10px 12px}nav button{flex:0 0 auto}
+main{padding:0 12px 40px;max-width:1000px;margin:auto}
+button{font:inherit;color:var(--t);background:var(--p2);border:1px solid var(--ln);border-radius:12px;padding:10px 14px;min-height:44px;font-weight:700;cursor:pointer}button:active{transform:scale(.97)}
+.pri{background:var(--acc);border-color:var(--acc);color:#1b0f06}.ok{background:var(--g);border-color:var(--g);color:#052612}.bad{color:var(--r)}
+input,select{font:inherit;color:var(--t);background:#17110d;border:1px solid var(--ln);border-radius:12px;padding:10px 12px;min-height:44px;width:100%}
+input:focus,select:focus,button:focus-visible{outline:2px solid var(--acc)}label{display:block;margin:10px 0 4px;color:var(--m);font-size:14px}
+.card{background:var(--p);border:1px solid var(--ln);border-radius:18px;padding:14px;margin-bottom:12px}h2,h3{margin:0 0 8px}
+.g{display:grid;grid-template-columns:repeat(auto-fill,minmax(130px,1fr));gap:8px}.g2{display:grid;grid-template-columns:repeat(auto-fill,minmax(290px,1fr));gap:12px}
+.chips{display:flex;gap:8px;overflow-x:auto;padding:4px 0 10px}.chips button{flex:0 0 auto}.on{outline:3px solid var(--t)}.occ{background:#4a2c12;border-color:#ffb21a}.rdy{background:var(--g);color:#052612;border-color:var(--g)}
+.ln{display:flex;gap:8px;align-items:center;justify-content:space-between;padding:8px 0;border-bottom:1px dashed var(--ln)}.m{color:var(--m);font-size:14px}
+.tag{font-size:12px;font-weight:800;padding:3px 9px;border-radius:99px;background:var(--p2);display:inline-block}.novo{color:#ffb21a}.preparo{color:#6ab7ff}.pronto{background:var(--g);color:#052612}
+.tot{font-size:26px;font-weight:800;color:var(--acc);margin:8px 0}.row{display:flex;gap:8px;flex-wrap:wrap}.row>*{flex:1;min-width:110px}
+.login{min-height:100vh;display:grid;place-items:center;padding:16px}.login .card{width:min(100%,380px);padding:26px;text-align:center}.login form>*{text-align:left}.err{color:#ff7b72;min-height:20px;margin-top:8px}
+#toast{position:fixed;left:50%;bottom:24px;transform:translate(-50%,120px);opacity:0;visibility:hidden;pointer-events:none;background:var(--t);color:#14100d;padding:12px 18px;border-radius:12px;font-weight:700;transition:transform .25s,opacity .25s,visibility .25s;z-index:99;max-width:90%}#toast.show{transform:translate(-50%,0);opacity:1;visibility:visible;pointer-events:auto}
+@media(prefers-reduced-motion:reduce){*{transition:none!important}}
+#cmd .mdl{position:fixed;inset:0;z-index:60;background:#000c;display:grid;place-items:center;padding:12px;overflow:auto}#cmd .box{width:min(100%,400px);max-height:100%;overflow:auto}
+.cupom{background:#fbf7ef;color:#1b1511;border-radius:10px;padding:14px 10px;margin-bottom:10px;overflow-x:auto}.cupom pre{margin:0;font:13px/1.35 ui-monospace,Menlo,Consolas,monospace;white-space:pre}
+.kpi{background:var(--p);border:1px solid var(--ln);border-radius:14px;padding:12px}.kpi small{display:block;color:var(--m);font-size:13px}.kpi b{font-size:21px;color:var(--acc)}
+.cols{display:flex;align-items:flex-end;gap:3px;height:176px}.col{flex:1;min-width:0;height:100%;display:flex;flex-direction:column;justify-content:flex-end;align-items:center}.col .v{font-size:11px;color:var(--m);white-space:nowrap;height:15px}.col .b{display:block;width:100%;background:var(--acc);border-radius:4px 4px 0 0}.col .b.z{background:var(--ln)}.col .l{font-size:11px;color:var(--m);height:16px;white-space:nowrap;margin-top:3px}
+.hl{display:flex;justify-content:space-between;gap:8px;padding:8px 0 3px}.hl b{white-space:nowrap}.hl span{min-width:0}.ht{height:8px;background:var(--p2);border-radius:99px;overflow:hidden}.ht i{display:block;height:100%;background:var(--acc);border-radius:99px}
+#chm:empty{display:none}#chm{position:fixed;inset:0;z-index:70;background:#000d;display:grid;place-items:center;padding:16px}#chm .box{width:min(100%,380px)}#chm .card{margin:0;text-align:center;border:3px solid var(--acc)}
+.pb{position:relative}.pb.sel{border-color:var(--acc)}
+.bdg{position:absolute;top:-9px;right:-6px;box-shadow:0 0 0 2px var(--p);min-width:24px;height:24px;padding:0 6px;border-radius:99px;background:var(--acc);color:#1b0e04;font-size:14px;font-weight:800;display:grid;place-items:center}
+.pb.pop{animation:pop .3s ease-out}@keyframes pop{0%{background:var(--acc);transform:scale(.94)}60%{transform:scale(1.04)}100%{transform:scale(1)}}
+@media(prefers-reduced-motion:reduce){.pb.pop{animation:none}}
+
+/* ===== v2: fundo com brasa, layout pensado pro celular ===== */
+html{-webkit-tap-highlight-color:transparent;overscroll-behavior-y:none}
+body{touch-action:manipulation}
+body::before{content:"";position:fixed;inset:0;z-index:-1;pointer-events:none;background:
+ radial-gradient(90% 45% at 50% 108%,color-mix(in srgb,var(--acc) 26%,transparent),transparent 70%),
+ radial-gradient(60% 35% at 100% 0,color-mix(in srgb,var(--acc) 15%,transparent),transparent 70%),
+ url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Cpath fill='%23ff6a1a' fill-opacity='.07' d='M32 4c4 10 16 18 16 34a16 16 0 0 1-32 0c0-8 4-12 8-18 1 5 4 7 6 8-2-9 0-18 2-24z'/%3E%3C/svg%3E") no-repeat right -50px bottom 90px/240px,
+ repeating-linear-gradient(135deg,#ffffff07 0 1px,transparent 1px 16px)}
+header{background:#14100dd9;-webkit-backdrop-filter:blur(12px);backdrop-filter:blur(12px)}
+.card,.kpi{background:#1e1813ee;box-shadow:0 6px 20px #0004}
+nav button i{display:none;font-style:normal}
+.mg{display:grid;grid-template-columns:repeat(auto-fill,minmax(92px,1fr));gap:8px;margin:4px 0 12px}
+.card .mg{margin-bottom:0}
+.mc{display:flex;flex-direction:column;align-items:center;gap:2px;padding:12px 6px;border-radius:16px;background:var(--p2);border:1px solid var(--ln);color:var(--t);min-height:64px;justify-content:center}
+.mc b{font-size:16px}.mc small{font-size:12px;font-weight:600;color:var(--m)}
+.mc.occ small{color:#ffb21a}.mc.rdy small{color:#052612}.mc.add{background:transparent;border-style:dashed}
+.mc.prep{background:#12304a;border-color:#6ab7ff}.mc.prep small{color:#6ab7ff}
+.u1{border-left:4px solid #ffb21a}.u2{border-left:4px solid var(--r)}
+.sendbar{position:fixed;left:10px;right:10px;bottom:calc(78px + env(safe-area-inset-bottom));z-index:6;display:flex;align-items:center;justify-content:space-between;gap:12px;padding:10px 10px 10px 16px;background:#2a221bf5;border:1px solid var(--acc);border-radius:18px;box-shadow:0 10px 30px #000a}
+.sendbar small{display:block;color:var(--m)}.sendbar button{min-height:48px;padding:0 22px}
+@media(min-width:701px){.sendbar{bottom:16px;left:50%;right:auto;transform:translateX(-50%);width:min(560px,92vw)}}
+@media(max-width:700px){
+ nav{position:fixed;left:0;right:0;bottom:0;z-index:6;gap:2px;justify-content:space-around;padding:6px 6px calc(6px + env(safe-area-inset-bottom));background:#14100df5;border-top:1px solid var(--ln);-webkit-backdrop-filter:blur(12px);backdrop-filter:blur(12px)}
+ nav button{flex:1 0 64px;display:flex;flex-direction:column;align-items:center;gap:1px;padding:6px 4px;border:0;background:none;border-radius:12px;font-size:11px;min-height:54px}
+ nav button i{display:block;font-size:20px;line-height:1.1}
+ nav button.pri{background:color-mix(in srgb,var(--acc) 22%,transparent);color:var(--acc)}
+ main{padding-bottom:calc(150px + env(safe-area-inset-bottom))}
+ #toast{bottom:calc(150px + env(safe-area-inset-bottom))}
+}
+.ln .pi{flex:0 0 92px;width:92px;text-align:right;font-weight:800;color:var(--acc)}.ph{width:72px;height:72px;border-radius:14px;object-fit:cover;flex:0 0 72px}
+
+/* ===== Happy Hour ===== */
+.hhb{margin:10px 0;padding:11px 14px;border-radius:14px;font-weight:800;background:linear-gradient(135deg,#ffb21a,var(--acc));color:#1b0f06;display:flex;justify-content:space-between;gap:8px;flex-wrap:wrap}
+.hhb.fim{background:var(--r);color:#fff}
+.chips button.hhc:not(.pri){background:linear-gradient(135deg,#ffb21a,var(--acc));border-color:#ffb21a;color:#1b0f06}
+.pb.hh{border-color:#ffb21a}.pb s{color:var(--m);font-size:12px}.pb .hp{color:#ffb21a;font-weight:800;font-size:14px}
+#hhm:empty{display:none}#hhm{position:fixed;inset:0;z-index:80;background:#000d;display:grid;place-items:center;padding:16px}#hhm .box{width:min(100%,380px)}#hhm .card{margin:0;text-align:center;border:3px solid var(--r)}
+.hhl{display:flex;gap:10px;align-items:center}.hhl input[type=checkbox]{width:26px;height:26px;min-height:26px;flex:0 0 26px;padding:0}
+
+/* ===== v3: stepper do celular, remover itens, produtos em lote, Happy Hour mobile ===== */
+.hid{display:none!important}
+.qt{display:inline-flex;align-items:center;justify-content:center;gap:2px;background:var(--p2);border:1px solid var(--ln);border-radius:16px;padding:3px;flex:0 0 auto}
+.qt button{flex:0 0 52px;width:52px;min-width:52px;height:52px;min-height:52px;padding:0;display:grid;place-items:center;font-size:26px;line-height:1;border-radius:13px}
+.qt b{flex:0 0 auto;min-width:48px;text-align:center;font-size:22px;font-variant-numeric:tabular-nums}
+.ni{padding:12px 0;border-bottom:1px dashed var(--ln)}.ni:last-child{border-bottom:0}
+.nh{display:flex;justify-content:space-between;align-items:baseline;gap:10px}.nh b{min-width:0}.nh span{color:var(--acc);font-weight:800;white-space:nowrap}
+.ni input{margin:8px 0}
+.nc{display:flex;align-items:center;justify-content:space-between;gap:10px}
+.nc .rm{flex:0 0 auto;height:52px;padding:0 16px}
+.it{display:flex;align-items:center;justify-content:space-between;gap:8px;padding:3px 0}.it span{flex:1;min-width:0}
+.ri{flex:0 0 44px;width:44px;min-width:44px;padding:0;color:var(--r);font-size:18px;display:grid;place-items:center}
+.stk{display:grid;gap:8px}
+.danger{background:var(--r);border-color:var(--r);color:#fff}
+.pb s,.pb .hp{white-space:nowrap}
+.sl{margin:0;cursor:pointer;color:var(--t);font-size:16px;min-height:52px}.sl input{width:26px;min-height:26px;height:26px;flex:0 0 26px;padding:0}.sl.on2{background:#ff6a1a1f;border-radius:10px}
+.ln .acts{display:flex;gap:6px;flex:0 0 auto}.acts button{padding:0;width:46px;min-width:46px}
+.hht{display:grid;grid-template-columns:1fr 1fr;gap:10px}.hht>div{min-width:0}.hht input{min-width:0;height:50px;-webkit-appearance:none;appearance:none;text-align:left}
+.hr{flex-wrap:wrap}.hr.on3{border-left:4px solid #ffb21a;padding-left:8px}
+.hp2{display:flex;flex-direction:column;align-items:flex-end;gap:2px;flex:0 0 auto}.hp2 .pi{flex:none;width:100px}
+</style></head><body>
+<div id="splash"><div class="mark" id="sl">🔥</div><b id="sn">Espetinhos</b><span class="m">Carregando…</span></div>
+<div id="app"></div><div id="cmd"></div><div id="chm"></div><div id="hhm"></div><div id="toast" onclick="this.className=''"></div>
+<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
+<script>
+const CFG={apiKey:"AIzaSyA0JWR3EyD6WnPLkycruhW9k0f6_kL8HK8",authDomain:"espetinho-pedidos-jp.firebaseapp.com",projectId:"espetinho-pedidos-jp",storageBucket:"espetinho-pedidos-jp.firebasestorage.app",messagingSenderId:"825804185421",appId:"1:825804185421:web:f6c901305b62abab232104"};
+firebase.initializeApp(CFG);
+const auth=firebase.auth(),db=firebase.firestore(),DOM="@espetinhos.app";
+db.settings({experimentalForceLongPolling:true});
+setTimeout(()=>$("#splash").classList.add("off"),8000);
+const $=s=>document.querySelector(s),esc=s=>String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c])),money=n=>n.toLocaleString("pt-BR",{style:"currency",currency:"BRL"});
+const S={cfg:{nome:"Espetinhos",cor:"#ff6a1a",logo:""},mesas:[],prods:[],peds:[],users:[],tab:"",mesa:null,cat:null,draft:{},u:null,un:[],prev:null};
+const TABS={garcom:[["mesas","Mesas"],["meus","Meus pedidos"]],cozinha:[["fila","Fila"],["painel","Painel"]],churrasqueiro:[["fila","Fila"],["painel","Painel"]],admin:[["peds","Pedidos"],["rel","Relatórios"],["equipe","Equipe"],["mesasadm","Mesas"],["prodadm","Produtos"],["hh","Happy Hour"],["cfg","Config"]]};
+const IC={mesas:"🍽️",meus:"🧾",fila:"🔥",painel:"📊",peds:"📋",rel:"📈",equipe:"👥",mesasadm:"🪑",prodadm:"🍢",hh:"🍻",cfg:"⚙️"};
+const LBL={novo:"Enviado",preparo:"Em preparo",pronto:"Pronto",entregue:"Entregue"};
+const SEED="Espetinhos*1|Calabresa:6,Frango:6,Porco:6,Salsichão:6,Asinha de frango:9,Alcatra:10,Carne de sol:10,Carne de sol com queijo:10,Charque:10,Coração:10,Cupim:10,Frango com bacon:10,Kafta:10,Linguiça calabresa:8,Linguiça toscana:8,Medalhão de frango:10,Medalhão recheado:10,Queijo coalho:10,Ovo com bacon:9;Pão de alho*1|Bacon:9,Camarão:10,Carne seca com cream cheese:15,Calabresa:9,Tradicional:8;Pra beliscar*1|Batata frita P:10,Batata frita G:15,Camarão empanado 300gr:40,Camarão alho e óleo 300ml:35,Carne de sol com fritas:40,Calabresa com fritas:25,Ensopado de camarão 300ml:25,Ensopado de marisco 300ml:25,Fava porção 300gr:20,Isca de frango:25,Mocotó porção 300ml:20,Purê de macaxeira 300gr:20,Tripá bovina:20,Pra beliscar completo:55;Pastéis*1|Carne seca com cream cheese:25,Frango:20,Frango com cream cheese:25,Queijo:20;Caldinhos*1|Caldinho de camarão:10,Caldinho de charque:10,Caldinho de fava:8,Caldinho de mocotó:10;Dindin gourmet*1|Surpresa de morango:6,Mousse de maracujá:6,Oreo:6,Pudim:6,Ninho com morango:6;Cervejas 600ml*0|Itaipava:8,Skol Pilsen:9,Amstel:10,Brahma Chopp:10;Sucos*0|Jarra acerola:20,Caju:10,Cajá:10,Graviola:10,Manga:10,Maracujá:12,Jarra maracujá:24;Cachaças 300ml*0|Matuta cristal:20,Matuta sabor:22,Serra da Areia cristal:20,Serra da Areia sabor:22;Doses*0|Dreher:5,Red Label:10,Montila:5,Matuta cristal:4,Matuta sabor:5,Serra da Areia cristal:4,Serra da Areia sabor:5";
+let tt,ac;
+const toast=m=>{const t=$("#toast");t.textContent=m;t.className="show";clearTimeout(tt);tt=setTimeout(()=>t.className="",3000)};
+const AC=window.AudioContext||window.webkitAudioContext;
+/* celular só libera o som depois de um toque: "destravamos" o áudio em qualquer toque na tela (e de novo se ele voltar a dormir) */
+const destravar=()=>{try{ac=ac||new AC();if(ac.state!=="running")ac.resume();const b=ac.createBuffer(1,1,22050),s=ac.createBufferSource();s.buffer=b;s.connect(ac.destination);s.start(0)}catch(e){}};
+["pointerdown","touchend","click","keydown"].forEach(ev=>addEventListener(ev,destravar,{passive:true}));
+const tocar=()=>{const t=ac.currentTime,o=ac.createOscillator(),g=ac.createGain();o.type="square";o.frequency.value=880;
+ g.gain.setValueAtTime(.0001,t);g.gain.exponentialRampToValueAtTime(.7,t+.02);g.gain.exponentialRampToValueAtTime(.0001,t+.3);
+ o.connect(g);g.connect(ac.destination);o.start(t);o.stop(t+.32)};
+const beep=()=>{try{ac=ac||new AC();ac.state==="running"?tocar():ac.resume().then(tocar).catch(()=>{});navigator.vibrate&&navigator.vibrate([200,100,200])}catch(e){}};
+const logo=()=>S.cfg.logo?`<img src="${S.cfg.logo}" alt="">`:"🔥",ago=p=>Math.floor((Date.now()-p.ts)/60000),tot=ps=>ps.reduce((s,p)=>s+p.itens.reduce((a,i)=>a+i.preco*i.qty,0),0);
+function theme(){document.documentElement.style.setProperty("--acc",S.cfg.cor);document.title=S.cfg.nome;$("#sl").innerHTML=logo();$("#sn").textContent=S.cfg.nome}
+
+/* ===== HAPPY HOUR =====
+   Janela de horário (padrão 17:00–20:00, editável na aba "Happy Hour" do admin).
+   Produto no Happy Hour = produto normal com hh:true e hhPreco (preço promocional).
+   Fora do horário o preço normal volta sozinho. */
+const HHCAT="🍻 Happy Hour";
+function hhInfo(){const c=S.cfg;if(c.hhOn===false)return null;
+ const m=s=>{const[a,b]=String(s).split(":");return(+a||0)*60+(+b||0)},a=m(c.hhIni||"17:00"),b=m(c.hhFim||"20:00"),d=new Date(),n=d.getHours()*60+d.getMinutes();
+ if(a===b||!(a<b?n>=a&&n<b:n>=a||n<b))return null;
+ return{fim:c.hhFim||"20:00",rest:((b-n)%1440+1440)%1440}}
+const isHH=p=>!!(p.hh&&p.hhPreco>0&&hhInfo()),precoAtual=p=>isHH(p)?p.hhPreco:p.preco,
+ restTxt=r=>r>=60?Math.floor(r/60)+"h "+(r%60)+"min":r+" min";
+function hhBanner(){const h=hhInfo();if(!h||!S.prods.some(p=>p.hh&&p.hhPreco>0))return"";
+ return `<div class="hhb${h.rest<=15?" fim":""}"><span>🍻 HAPPY HOUR · até ${esc(h.fim)}</span><span>${h.rest<=15?"⚠️ ":""}faltam ${restTxt(h.rest)}</span></div>`}
+/* itens já no rascunho do pedido acompanham o preço vigente (entrou/saiu do Happy Hour) */
+function reprecificar(){let n=0;Object.values(S.draft).forEach(d=>d.forEach(i=>{const p=S.prods.find(x=>x.id===i.pid);if(!p)return;
+ const v=precoAtual(p),h=isHH(p);if(v!==i.preco||h!==!!i.hh){i.preco=v;i.hh=h;n++}}));return n}
+const hhFecha=()=>{$("#hhm").innerHTML=""};
+function hhTick(){if(!S.u||!["garcom","admin"].includes(S.u.role))return;
+ const h=hhInfo(),antes=S.hhAntes;S.hhAntes=!!h;
+ if(antes===undefined||!S.prods.some(p=>p.hh&&p.hhPreco>0))return;   /* 1ª leitura só marca o ponto de partida */
+ if(h&&!antes){S.hhAviso=0;S.cat=HHCAT;reprecificar();toast("🍻 Happy Hour começou!");beep();render()}
+ else if(!h&&antes){const n=reprecificar();
+  $("#hhm").innerHTML=`<div class="box"><div class="card"><div style="font-size:52px;line-height:1.2">🍻</div><h2>Happy Hour encerrado!</h2><p style="margin:6px 0 4px">Os preços voltaram ao normal.</p>${n?`<p class="m" style="margin:0">${n} item(ns) do pedido que você está montando foram atualizados.</p>`:""}<button class="pri" style="width:100%;margin-top:12px;min-height:56px;font-size:18px" onclick="hhFecha()">Entendi</button></div></div>`;
+  beep();setTimeout(beep,450);render()}
+ else if(h&&h.rest<=15&&!S.hhAviso){S.hhAviso=1;toast("⏰ O Happy Hour acaba em "+h.rest+" min");beep()}}
+setInterval(hhTick,15000);
+
+
+auth.onAuthStateChanged(async f=>{S.un.forEach(u=>u());S.un=[];S.prev=null;S.hhAntes=undefined;S.hhAviso=0;okAlerta();
+ if(!f){try{wl&&wl.release()}catch(e){}S.u=null;$("#splash").classList.add("off");return render()}
+ try{const d=await db.collection("users").doc(f.uid).get();if(!d.exists||d.data().ativo===false)throw 0;
+  S.u={uid:f.uid,...d.data()};S.tab=TABS[S.u.role][0][0];start();manterTela()}
+ catch(e){await auth.signOut();toast(e&&e.code&&e.code!=="permission-denied"?"Sem conexão com o servidor ("+e.code+")":"Acesso não autorizado: usuário sem cadastro ou inativo.")}
+ $("#splash").classList.add("off")});
+function start(){const sub=(q,fn)=>S.un.push(q.onSnapshot(fn,e=>console.error(e.code))),list=s=>s.docs.map(d=>({id:d.id,...d.data()}));
+ sub(db.collection("config").doc("app"),d=>{if(d.exists)Object.assign(S.cfg,d.data());theme();render();if(S.u.role==="admin"&&!d.metadata.fromCache)agendaPub()});
+ sub(db.collection("mesas"),s=>{S.mesas=list(s).sort((a,b)=>a.ord-b.ord);render()});
+ sub(db.collection("produtos"),s=>{S.prods=list(s).sort((a,b)=>a.nome.localeCompare(b.nome));render();if(S.u.role==="admin"&&!s.metadata.fromCache)agendaPub()});
+ sub(db.collection("pedidos").where("aberto","==",true),s=>{const n=list(s).sort((a,b)=>a.ts-b.ts);
+  if(S.prev)n.forEach(p=>{const o=S.prev[p.id];
+   if(S.u.role==="garcom"&&p.garcomUid===S.u.uid&&o&&o.n===p.itens.length){const nv=(p.prontos||[]).filter(k=>!o.k.includes(k)&&p.itens[k]);
+    if(nv.length){alerta("✅",p.mesaNome+(nv.length>1?" · itens prontos!":" · item pronto!"),nv.map(k=>p.itens[k].nome).join(", "))}
+    else if(p.status==="pronto"&&o.s!=="pronto"){alerta("✅",p.mesaNome,"Pedido pronto!")}}
+   if(["cozinha","churrasqueiro"].includes(S.u.role)&&o===undefined&&p.status==="novo"&&pendEst(p,estacao())>0){toast("🔔 Novo pedido: "+p.mesaNome);beep()}});
+  S.prev=Object.fromEntries(n.map(p=>[p.id,{s:p.status,k:p.prontos||[],n:p.itens.length}]));S.peds=n;render()});
+ if(S.u.role==="admin")sub(db.collection("users"),s=>{S.users=list(s);render()});
+ if(S.u.role==="garcom"){S.chm=undefined;S.chmN=0;
+  sub(db.collection("chamadas").doc("cozinha"),d=>{const c=d.exists?d.data():null;
+   if(S.chm===undefined){S.chm=c?c.ts:0;return}   /* primeira leitura = só marca o ponto de partida, não avisa */
+   if(c&&c.ts!==S.chm){S.chm=c.ts;alertaCozinha(c)}})}}
+
+function login(){return `<div class="login"><div class="card"><div class="mark">${logo()}</div><h2 style="margin-top:14px">${esc(S.cfg.nome)}</h2><p class="m">Acesso restrito à equipe</p><form onsubmit="return entrar(event)"><label>Usuário</label><input id="lu" autocapitalize="none" autocomplete="username" required><label>Senha</label><input id="lp" type="password" autocomplete="current-password" required><button class="pri" style="width:100%;margin-top:16px">Entrar</button><div class="err" id="le"></div></form></div></div>`}
+function entrar(e){e.preventDefault();auth.signInWithEmailAndPassword($("#lu").value.trim().toLowerCase()+DOM,$("#lp").value).catch(()=>$("#le").textContent="Usuário ou senha incorretos.");return false}
+const typing=()=>{const e=document.activeElement;return!!(e&&e.closest&&e.closest("#app")&&(/TEXTAREA|SELECT/.test(e.tagName)||(e.tagName==="INPUT"&&!/^(checkbox|radio|button|submit)$/.test(e.type))))};
+function render(){if(typing())return;const a=$("#app");if(!S.u){if(!a.querySelector(".login"))a.innerHTML=login();return}
+ a.innerHTML=`<header><span class="mark">${logo()}</span><b>${esc(S.cfg.nome)}</b><span class="sp"></span>${!["cozinha","churrasqueiro"].includes(S.u.role)?'<button onclick="abrirUltima()" aria-label="Última comanda">🧾</button>':""}<button onclick="senha()" aria-label="Alterar minha senha">🔑</button><button onclick="auth.signOut()">${esc(S.u.nome)} · Sair</button></header><nav>${TABS[S.u.role].map(([k,n])=>`<button class="${S.tab===k?"pri":""}" onclick="S.tab='${k}';render()"><i>${IC[k]||"•"}</i><span>${n}</span></button>`).join("")}</nav><main>${["garcom","admin"].includes(S.u.role)?hhBanner():""}${({mesas:vMesas,meus:vMeus,fila:vFila,painel:vPainel,peds:vPeds,rel:vRel,equipe:vEquipe,mesasadm:vMesasAdm,prodadm:vProdAdm,hh:vHH,cfg:vCfg}[S.tab]||(()=>""))()}</main>`}
+addEventListener("focusout",()=>setTimeout(render,250));setInterval(render,30000);
+function senha(){pedirTexto("Nova senha (mínimo 6 caracteres)","",p=>{if(p.length<6)return toast("A senha precisa ter 6+ caracteres");auth.currentUser.updatePassword(p).then(()=>toast("Senha alterada")).catch(e=>toast(e.code==="auth/requires-recent-login"?"Saia e entre de novo para trocar a senha":"Erro: "+e.code))},"password")}
+
+const cardPed=(p,act,rm)=>`<div class="ln" style="align-items:flex-start"><div style="flex:1;min-width:0"><b>${esc(p.mesaNome)}</b> <span class="m">· ${esc(p.garcomNome)} · ${ago(p)} min</span>${p.itens.map((i,k)=>`<div class="it"><span>${(p.prontos||[]).includes(k)?"✅ ":""}${i.qty}× ${esc(i.nome)}${i.hh?" 🍻":""}${i.obs?` <small class="m">(${esc(i.obs)})</small>`:""}</span>${rm?`<button class="ri" onclick="tirarItem('${p.id}',${k})" aria-label="Remover ${esc(i.nome)}">✕</button>`:""}</div>`).join("")}</div><div style="flex:0 0 auto"><span class="tag ${p.status}">${LBL[p.status]}</span>${parcial(p)}${act&&p.status==="pronto"?`<br><button class="ok" onclick="setSt('${p.id}','entregue')">Entregar</button>`:""}</div></div>`;
+function vMesas(){const ms=S.mesas.filter(m=>m.ativa!==false);
+ const chips=`<div class="mg">${ms.map(m=>{const l=S.peds.filter(p=>p.mesaId===m.id),r=l.some(temPronto);return `<button class="mc${S.mesa===m.id?" on":""}${r?" rdy":l.length?" occ":""}" onclick="S.mesa='${m.id}';render()"><b>${esc(m.nome)}</b><small>${r?"✅ Pronto!":l.length?money(tot(l)):"Livre"}</small></button>`}).join("")}${ms.length?"":'<span class="m">Nenhuma mesa ainda.</span>'}<button class="mc add" onclick="novaMesa()"><b>＋</b><small>Nova mesa</small></button></div>`;
+ if(!ms.some(m=>m.id===S.mesa))return chips;
+ const pr=S.prods.filter(p=>p.ativo!==false),hp=pr.filter(isHH),cats=[...(hp.length?[HHCAT]:[]),...new Set(pr.map(p=>p.cat))],cat=cats.includes(S.cat)?S.cat:cats[0],d=S.draft[S.mesa]||[],ps=S.peds.filter(p=>p.mesaId===S.mesa);
+ return chips+`<div class="card"><div class="chips">${cats.map(c=>`<button class="${c===cat?"pri":""}${c===HHCAT?" hhc":""}" onclick="S.cat=this.dataset.c;render()" data-c="${esc(c)}">${esc(c)}</button>`).join("")}</div><div class="g">${pr.filter(p=>cat===HHCAT?isHH(p):p.cat===cat).map(p=>{const q=d.filter(i=>i.pid===p.id).reduce((a,i)=>a+i.qty,0);return `<button class="pb${q?" sel":""}${isHH(p)?" hh":""}${S.pop===p.id?" pop":""}" onclick="add('${p.id}')">${esc(p.nome)}<br>${isHH(p)?`<small class="hp">🍻 ${money(p.hhPreco)}</small> <s>${money(p.preco)}</s>`:`<small class="m">${money(p.preco)}</small>`}${q?`<span class="bdg">${q}</span>`:""}</button>`}).join("")}</div></div>
+<div class="card"><h3>Novo pedido</h3>${d.map((i,k)=>`<div class="ni"><div class="nh"><b>${esc(i.nome)}</b><span>${money(i.preco*i.qty)}</span></div><input placeholder="Observação (ex.: sem cebola)" maxlength="80" value="${esc(i.obs)}" oninput="S.draft[S.mesa][${k}].obs=this.value"><div class="nc"><div class="qt"><button onclick="qty(${k},-1)" aria-label="Tirar um">−</button><b>${i.qty}</b><button onclick="qty(${k},1)" aria-label="Mais um">+</button></div><button class="bad rm" onclick="rmDraft(${k})" aria-label="Remover do pedido">🗑️ Remover</button></div></div>`).join("")||'<p class="m">Toque nos produtos para montar o pedido.</p>'}</div>
+<div class="card"><div class="ln" style="border:0;padding:0 0 8px"><h3 style="margin:0">Conta</h3><button onclick="renomearMesa('${S.mesa}')">✏️ Renomear mesa</button></div>${ps.map(p=>cardPed(p,1,1)).join("")||'<p class="m">Mesa livre.</p>'}<div class="tot">${money(tot(ps))}</div>${ps.length?'<button class="ok" onclick="fechar()">Fechar conta</button>':""}</div>${d.length?`<div class="sendbar"><div><b>${d.reduce((a,i)=>a+i.qty,0)} itens</b><small>${money(d.reduce((a,i)=>a+i.preco*i.qty,0))}</small></div><button class="pri" onclick="enviar()">Enviar pedido</button></div>`:""}`}
+const vMeus=()=>`<div class="card">${S.peds.filter(p=>p.garcomUid===S.u.uid).map(p=>cardPed(p,1,1)).join("")||'<p class="m">Nenhum pedido em aberto.</p>'}</div>`;
+const vPeds=()=>`<div class="card">${S.peds.map(p=>cardPed(p,0,1)).join("")||'<p class="m">Nenhum pedido em aberto.</p>'}</div>`;
+function chamar(){
+ if(S.cd&&Date.now()-S.cd<1200)return;S.cd=Date.now();   /* evita duplo toque sem querer, mas dá pra apertar várias vezes */
+ const ms=[...new Set(S.peds.filter(temPronto).map(p=>p.mesaNome))];
+ db.collection("chamadas").doc("cozinha").set({ts:Date.now(),de:S.u.nome,mesas:ms,quem:S.u.role})
+  .then(()=>toast("🔔 Garçons chamados")).catch(e=>toast("Erro ao chamar: "+e.code))}
+/* ===== ALERTA DO GARÇOM: toca e vibra SEM PARAR até o garçom apertar o botão =====
+   Vale pra "pedido/item pronto" e pra "cozinha chamando". Se chegar outro aviso com o alarme tocando, ele entra na mesma lista.
+   ALARME_MS = intervalo entre uma sirene e outra | MANTER_TELA = true segura a tela do garçom ligada (o celular só toca com o app aberto; gasta mais bateria) */
+const ALARME_MS=2200,MANTER_TELA=true;
+let alT=null,wl=null;
+const sirene=()=>{try{ac=ac||new AC();const go=()=>{const t=ac.currentTime;
+  [[988,0],[1319,.22],[988,.44],[1319,.66]].forEach(([f,d])=>{const o=ac.createOscillator(),g=ac.createGain();o.type="square";o.frequency.value=f;
+   g.gain.setValueAtTime(.0001,t+d);g.gain.exponentialRampToValueAtTime(1,t+d+.02);g.gain.exponentialRampToValueAtTime(.0001,t+d+.2);
+   o.connect(g);g.connect(ac.destination);o.start(t+d);o.stop(t+d+.21)})};
+  ac.state==="running"?go():ac.resume().then(go).catch(()=>{})}catch(e){}};
+const alarmeCiclo=()=>{sirene();hap([400,120,400,120,400,120,400])};
+const alarmeIni=()=>{if(alT)return;alarmeCiclo();alT=setInterval(alarmeCiclo,ALARME_MS)};
+const alarmeFim=()=>{clearInterval(alT);alT=null;hap(0)};
+function alerta(ico,tit,msg){S.al=S.al||[];S.al.push({ico,tit,msg});desenharAlerta();alarmeIni()}
+function desenharAlerta(){const l=S.al||[];if(!l.length){$("#chm").innerHTML="";return}
+ $("#chm").innerHTML=`<div class="box"><div class="card"><div style="font-size:52px;line-height:1.2">${l[l.length-1].ico}</div>${l.slice(-4).reverse().map(a=>`<div class="ln" style="flex-direction:column;gap:2px;text-align:center"><h2 style="margin:0">${esc(a.tit)}</h2>${a.msg?`<p style="margin:0">${esc(a.msg)}</p>`:""}</div>`).join("")}${l.length>4?`<p class="m" style="margin:8px 0 0">+ ${l.length-4} aviso(s) anterior(es)</p>`:""}<button class="pri" style="width:100%;margin-top:12px;min-height:64px;font-size:20px" onclick="okAlerta()">${l.length>1?"Ciente de todos ("+l.length+")":"Já vou"}</button></div></div>`}
+const okAlerta=()=>{S.al=[];alarmeFim();$("#chm").innerHTML=""};
+function alertaCozinha(c){const ms=(c.mesas||[]).join(", ");
+ alerta("🔔",(c.quem==="churrasqueiro"?"Churrasqueira":"Cozinha")+" chamando!",(c.de||"Cozinha")+(ms?" · Pronto: "+ms:""))}
+/* mantém a tela ligada no celular do garçom (o navegador solta isso sozinho ao minimizar; pedimos de novo ao voltar/tocar) */
+const manterTela=async()=>{if(!MANTER_TELA||wl||!S.u||S.u.role!=="garcom"||!("wakeLock"in navigator))return;
+ try{wl=await navigator.wakeLock.request("screen");wl.addEventListener("release",()=>{wl=null})}catch(e){wl=null}};
+["pointerdown","touchend"].forEach(ev=>addEventListener(ev,manterTela,{passive:true}));
+document.addEventListener("visibilitychange",()=>{if(!document.hidden){destravar();manterTela();if(alT)alarmeCiclo();hhTick();render()}});
+/* categorias que vão SÓ pro churrasqueiro (em minúsculas). Pra incluir outra, é só acrescentar, ex.: ["espetinhos","pão de alho"] */
+const CATS_CHURRASCO=["espetinhos"];
+const destino=p=>!p.prep?"":CATS_CHURRASCO.includes(String(p.cat||"").trim().toLowerCase())?"churrasco":"cozinha",
+ estacao=()=>S.u.role==="churrasqueiro"?"churrasco":"cozinha",
+ meu=(i,e)=>i.prep&&(i.dest||"cozinha")===e,   /* pedidos antigos, sem destino, contam como cozinha */
+ pendEst=(p,e)=>p.itens.filter((i,k)=>meu(i,e)&&!(p.prontos||[]).includes(k)).length,
+ temPronto=p=>p.status==="pronto"||(p.status!=="entregue"&&(p.prontos||[]).length>0),
+ parcial=p=>{const t=p.itens.filter(i=>i.prep).length,n=(p.prontos||[]).length;return["novo","preparo"].includes(p.status)&&n>0&&t>1?`<br><small class="m">${n}/${t} prontos</small>`:""};
+function itensCozinha(p,e){const pr=p.prontos||[];
+ return p.itens.map((i,k)=>{if(!meu(i,e))return"";const f=pr.includes(k);
+  return `<div class="ln"${f?' style="opacity:.55"':""}><div style="flex:1"><b>${f?"✅ ":""}${i.qty}× ${esc(i.nome)}</b>${i.obs?` <span class="tag">${esc(i.obs)}</span>`:""}</div>${f?`<button onclick="itemDesfazer('${p.id}',${k})">Desfazer</button>`:`<button class="ok" onclick="itemPronto('${p.id}',${k})">Pronto</button>`}</div>`}).join("")}
+/* transação: duas estações (ou dois cozinheiros) mexendo no mesmo pedido ao mesmo tempo não se atropelam.
+   O pedido só vira "pronto" quando TODOS os itens de preparo, de qualquer estação, estiverem prontos. */
+function marcar(id,ks,pronto){const ref=db.collection("pedidos").doc(id);
+ db.runTransaction(async t=>{const d=await t.get(ref);if(!d.exists)return;const p=d.data(),ps=new Set(p.prontos||[]);
+  ks.forEach(k=>pronto?ps.add(k):ps.delete(k));
+  const todos=p.itens.every((i,j)=>!i.prep||ps.has(j));
+  t.update(ref,{prontos:[...ps].sort((a,b)=>a-b),status:todos?"pronto":"preparo"})}).catch(e=>toast("Erro: "+(e.code||e.message)))}
+const itemPronto=(id,k)=>marcar(id,[k],true),itemDesfazer=(id,k)=>marcar(id,[k],false);
+function todosProntos(id){const p=S.peds.find(x=>x.id===id);if(!p)return;const e=estacao();
+ marcar(id,p.itens.map((i,k)=>meu(i,e)?k:-1).filter(k=>k>=0),true)}
+const urg=p=>ago(p)>=20?"u2":ago(p)>=10?"u1":"";
+function vPainel(){const e=estacao(),ms=S.mesas.filter(m=>m.ativa!==false),
+ est=m=>{const l=S.peds.filter(p=>p.mesaId===m.id);return!l.length?"livre":l.some(temPronto)?"pronto":l.some(p=>p.status==="preparo")?"preparo":l.some(p=>p.status==="novo")?"novo":"servida"},
+ cl={livre:"",novo:"occ",preparo:"prep",pronto:"rdy",servida:"occ"},tx={livre:"Livre",novo:"Aguardando",preparo:"Em preparo",pronto:"Pronto",servida:"Servida"},
+ meus=S.peds.filter(p=>p.status!=="entregue"&&p.itens.some(i=>meu(i,e))),
+ N=meus.filter(p=>p.status==="novo"&&pendEst(p,e)>0),P=meus.filter(p=>p.status==="preparo"&&pendEst(p,e)>0),R=meus.filter(p=>p.status==="pronto"||pendEst(p,e)===0),
+ kp=(t,v)=>`<div class="kpi"><small>${t}</small><b>${v}</b></div>`,
+ lista=(t,l)=>`<div class="card"><h3>${t} <span class="tag">${l.length}</span></h3>${l.map(p=>`<div class="ln ${p.status==="pronto"?"":urg(p)}"><div><b>${esc(p.mesaNome)}</b> <span class="m">${ago(p)} min · ${esc(p.garcomNome)}</span><div class="m">${p.itens.filter(i=>meu(i,e)).map(i=>i.qty+"× "+esc(i.nome)).join(", ")}</div></div></div>`).join("")||'<p class="m" style="margin:0">Nada por aqui.</p>'}</div>`;
+ return `<div class="g" style="margin-bottom:12px">${kp("Mesas ocupadas",ms.filter(m=>est(m)!=="livre").length+" / "+ms.length)}${kp("Na fila",N.length)}${kp("Em preparo",P.length)}${kp("Prontos",R.length)}</div>
+<div class="card"><h3>Mesas</h3><div class="mg">${ms.map(m=>`<div class="mc ${cl[est(m)]}"><b>${esc(m.nome)}</b><small>${tx[est(m)]}</small></div>`).join("")}</div></div>
+<div class="g2">${lista("Enviados",N)}${lista("Em preparo",P)}${lista("Prontos",R)}</div>`}
+function vFila(){const e=estacao(),l=S.peds.filter(p=>["novo","preparo"].includes(p.status)&&pendEst(p,e)>0);
+ return `<button class="pri" style="width:100%;min-height:64px;font-size:20px;margin-bottom:12px" onclick="chamar()">🔔 Chamar garçom</button><div class="g2">${l.map(p=>`<div class="card ${urg(p)}"><h2>${esc(p.mesaNome)} <small class="m">${ago(p)} min · ${LBL[p.status]}</small></h2><div class="m">Garçom: ${esc(p.garcomNome)}</div>${itensCozinha(p,e)}<div class="row" style="margin-top:10px">${p.status==="novo"?`<button onclick="setSt('${p.id}','preparo')">Em preparo</button>`:""}${pendEst(p,e)>1?`<button class="ok" onclick="todosProntos('${p.id}')">Tudo pronto</button>`:""}</div></div>`).join("")||'<p class="m">Fila limpa 🎉</p>'}</div>`}
+const setSt=(id,s)=>db.collection("pedidos").doc(id).update({status:s}).catch(e=>toast("Sem permissão: "+e.code));
+/* feedback do toque: vibra (só Android) + "tic" curtinho. TIC_SOM=false desliga o som */
+const TIC_SOM=true;
+const hap=p=>{try{navigator.vibrate&&navigator.vibrate(p)}catch(e){}};
+const tic=()=>{if(!TIC_SOM)return;try{ac=ac||new AC();const go=()=>{const t=ac.currentTime,o=ac.createOscillator(),g=ac.createGain();o.type="sine";o.frequency.value=1100;
+ g.gain.setValueAtTime(.0001,t);g.gain.exponentialRampToValueAtTime(.25,t+.005);g.gain.exponentialRampToValueAtTime(.0001,t+.06);o.connect(g);g.connect(ac.destination);o.start(t);o.stop(t+.07)};
+ ac.state==="running"?go():ac.resume().then(go).catch(()=>{})}catch(e){}};
+const toque=(p=30)=>{hap(p);tic()};
+function add(id){const p=S.prods.find(x=>x.id===id),d=S.draft[S.mesa]=S.draft[S.mesa]||[],x=d.find(i=>i.pid===id&&!i.obs);x?x.qty++:d.push({pid:id,nome:p.nome,preco:precoAtual(p),hh:isHH(p),prep:!!p.prep,dest:destino(p),qty:1,obs:""});S.pop=id;toque();render();S.pop=null}
+function qty(k,n){const d=S.draft[S.mesa];if(!d||!d[k])return;d[k].qty+=n;if(d[k].qty<1)d.splice(k,1);toque(25);render()}
+function rmDraft(k){const d=S.draft[S.mesa];if(!d||!d[k])return;d.splice(k,1);toque(25);render()}
+/* tirar item de um pedido JÁ ENVIADO (garçom se confundiu). Remove 1 unidade ou a linha toda.
+   Os "prontos" guardam o número da linha, então ao tirar uma linha os números seguintes são reajustados. */
+function tirarItem(id,k){const p=S.peds.find(x=>x.id===id),i=p&&p.itens[k];if(!i)return toast("Esse item não está mais no pedido");
+ const um=i.qty>1,aviso=(p.prontos||[]).includes(k)||p.status==="entregue"?"Esse item já foi preparado. ":p.status!=="novo"?"A cozinha já está com esse pedido: avise para não preparar. ":"";
+ modal(`<h3>Tirar do pedido?</h3><p style="margin:0 0 6px"><b>${i.qty}× ${esc(i.nome)}</b><br><span class="m">${esc(p.mesaNome)}</span></p>${aviso?`<p class="m" style="margin:0 0 12px;color:#ffb21a">⚠️ ${esc(aviso)}</p>`:'<div style="height:6px"></div>'}<div class="stk">${um?`<button id="ti1" style="min-height:52px">Tirar só 1 (ficam ${i.qty-1})</button>`:""}<button class="danger" id="tiall" style="min-height:52px">${um?"Remover todos ("+i.qty+")":"Remover item"}</button><button onclick="fecharCmd()">Cancelar</button></div>`,()=>{
+  const u=$("#ti1");if(u)u.onclick=()=>{fecharCmd();ajustarItem(id,k,i.nome,true)};
+  $("#tiall").onclick=()=>{fecharCmd();ajustarItem(id,k,i.nome,false)}})}
+function ajustarItem(id,k,nome,um){const ref=db.collection("pedidos").doc(id);
+ db.runTransaction(async t=>{const d=await t.get(ref);if(!d.exists)throw{code:"pedido-nao-existe"};const p=d.data();
+  if(!p.aberto)throw{code:"conta-ja-fechada"};
+  const itens=p.itens.map(x=>({...x}));if(!itens[k]||itens[k].nome!==nome)throw{code:"pedido-mudou"};
+  if(um&&itens[k].qty>1){itens[k].qty--;t.update(ref,{itens});return}
+  itens.splice(k,1);const pr=(p.prontos||[]).filter(j=>j!==k).map(j=>j>k?j-1:j);
+  if(!itens.length){t.update(ref,{itens:[],prontos:[],status:"entregue",aberto:false});return}   /* pedido ficou vazio: sai da lista */
+  const ip=itens.map((x,j)=>x.prep?j:-1).filter(j=>j>=0);let st=p.status;
+  if(!ip.length)st="entregue";else if(ip.every(j=>pr.includes(j))&&["novo","preparo"].includes(st))st="pronto";
+  t.update(ref,{itens,prontos:pr,status:st})})
+ .then(()=>{toast("Item removido");toque([30,40,30])}).catch(e=>toast(e.code==="pedido-mudou"?"O pedido mudou, confira e tente de novo":e.code==="conta-ja-fechada"?"Essa conta já foi fechada":"Erro: "+(e.code||e.message)))}
+function enviar(){const d=S.draft[S.mesa]||[],m=S.mesas.find(x=>x.id===S.mesa);if(!d.length)return;
+ if(reprecificar()){render();return toast("🍻 O Happy Hour mudou: preços atualizados. Confira e envie de novo.")}
+ db.collection("pedidos").add({mesaId:m.id,mesaNome:m.nome,garcomUid:S.u.uid,garcomNome:S.u.nome,itens:d.map(({nome,preco,qty,obs,prep,dest,hh})=>({nome,preco,qty,obs:obs||"",prep,dest:dest||"",hh:!!hh})),status:d.some(i=>i.prep)?"novo":"entregue",aberto:true,ts:Date.now()})
+ .then(()=>{delete S.draft[S.mesa];toast("Pedido enviado");toque([40,60,40]);render()}).catch(e=>{hap([150,80,150]);toast("Erro ao enviar: "+e.code)})}
+/* ===== COMANDA: impressão (RawBT) + comanda virtual ===== */
+const PAPEL=32;          // colunas por linha: 32 = bobina 58mm | 48 = bobina 80mm
+const SEM_ACENTO=true;   // true evita letras estranhas em impressoras que não entendem acento
+const sa=s=>SEM_ACENTO?String(s).normalize("NFD").replace(/[\u0300-\u036f]/g,""):String(s);
+const brl=n=>money(n).replace(/\u00a0/g," ");
+
+function montarComanda(m,ps){
+ const mapa=new Map();
+ ps.forEach(p=>p.itens.forEach(i=>{const k=i.nome+"|"+(i.obs||"")+"|"+i.preco,x=mapa.get(k);
+  x?x.qty+=i.qty:mapa.set(k,{nome:i.nome,obs:i.obs||"",preco:i.preco,qty:i.qty,hh:!!i.hh})}));
+ const itens=[...mapa.values()];
+ return{mesa:m.nome,garcom:S.u.nome,loja:S.cfg.nome,ts:Date.now(),itens,total:itens.reduce((s,i)=>s+i.preco*i.qty,0)}}
+
+/* devolve a lista de linhas [{s:texto, b:negrito}] — a mesma lista vai pra tela e pra impressora */
+function linhasComanda(c){
+ const L=PAPEL,tr="-".repeat(L),
+  lin=(a,b)=>a.slice(0,Math.max(0,L-b.length-1)).padEnd(L-b.length)+b,
+  ctr=s=>" ".repeat(Math.max(0,Math.floor((L-s.length)/2)))+s,
+  wrap=(s,w)=>{const o=[];while(s.length>w){let k=s.lastIndexOf(" ",w);if(k<1)k=w;o.push(s.slice(0,k));s=s.slice(k).trimStart()}o.push(s);return o},
+  d=new Date(c.ts),dh=d.toLocaleDateString("pt-BR")+" "+d.toLocaleTimeString("pt-BR",{hour:"2-digit",minute:"2-digit"}),
+  r=[],add=(s,b)=>r.push({s,b:!!b});
+ add(ctr(sa(c.loja)),1);add(ctr("COMANDA"));add(tr);
+ add(sa("Mesa: "+c.mesa),1);add(sa("Garcom: "+c.garcom));add(dh);add(tr);
+ c.itens.forEach(i=>{
+  const w=wrap(sa(i.qty+"x "+i.nome+(i.hh?" (HH)":"")),L),v=brl(i.preco*i.qty),u=w.pop();
+  w.forEach(x=>add(x));
+  if(u.length+v.length<L)add(lin(u,v));else{add(u);add(lin("",v))}
+  if(i.obs)wrap("("+sa(i.obs)+")",L-2).forEach(x=>add("  "+x))});
+ add(tr);add(lin("TOTAL",brl(c.total)),1);add(tr);add(ctr("Obrigado!"));add(ctr("Sem valor fiscal"));
+ return r}
+
+function bytesComanda(c){
+ const E=new TextEncoder(),p=[],raw=(...b)=>p.push(Uint8Array.from(b));
+ raw(0x1b,0x40);                                   // iniciar impressora
+ linhasComanda(c).forEach(({s,b})=>{raw(0x1b,0x45,b?1:0);p.push(E.encode(s+"\n"))}); // negrito + texto
+ raw(0x1b,0x45,0);raw(0x1b,0x64,4);                // desliga negrito e avança 4 linhas
+ const u=new Uint8Array(p.reduce((a,x)=>a+x.length,0));let o=0;p.forEach(x=>{u.set(x,o);o+=x.length});return u}
+
+function b64(u){let s="";for(let i=0;i<u.length;i+=0x8000)s+=String.fromCharCode.apply(null,u.subarray(i,i+0x8000));return btoa(s)}
+
+function imprimir(c){
+ try{location.href="intent:base64,"+b64(bytesComanda(c))+"#Intent;scheme=rawbt;package=ru.a402d.rawbtprinter;end;"}
+ catch(e){toast("Não foi possível imprimir. Use a comanda na tela.")}}
+
+const st=t=>{const e=$("#cst");if(e)e.textContent=t};
+function mostrarComanda(c){S.cmd=c;
+ $("#cmd").innerHTML=`<div class="mdl" onclick="if(event.target===this)fecharCmd()"><div class="box"><div class="cupom"><pre>${linhasComanda(c).map(l=>l.b?`<b>${esc(l.s)}</b>`:esc(l.s)).join("\n")}</pre></div><div id="cst" class="m" style="text-align:center;margin-bottom:8px"></div><div class="row"><button class="pri" onclick="imprimir(S.cmd)">🖨️ Imprimir</button><button onclick="fecharCmd()">Fechar</button></div></div></div>`}
+const fecharCmd=()=>{$("#cmd").innerHTML=""};
+/* ===== janelas próprias (no lugar de prompt/confirm) ===== */
+function modal(html,bind){$("#cmd").innerHTML=`<div class="mdl" onclick="if(event.target===this)fecharCmd()"><div class="box"><div class="card">${html}</div></div></div>`;bind&&bind()}
+function pedirTexto(titulo,valor,ok,tipo){
+ modal(`<h3>${esc(titulo)}</h3><input id="pt" type="${tipo||"text"}" maxlength="60" value="${esc(valor)}" autocomplete="off"><div class="row" style="margin-top:12px"><button class="pri" id="ptok">Salvar</button><button onclick="fecharCmd()">Cancelar</button></div>`,()=>{
+  const i=$("#pt"),go=()=>{const v=i.value.trim();if(!v)return;fecharCmd();ok(v)};
+  i.focus();i.select();$("#ptok").onclick=go;i.onkeydown=e=>{if(e.key==="Enter")go()}})}
+function confirmar(titulo,msg,ok,perigo){
+ modal(`<h3>${esc(titulo)}</h3><p class="m" style="margin:0 0 12px">${esc(msg)}</p><div class="row"><button class="${perigo?"bad":"pri"}" id="cfok">Confirmar</button><button onclick="fecharCmd()">Cancelar</button></div>`,()=>{
+  $("#cfok").onclick=()=>{fecharCmd();ok()}})}
+
+/* ===== mesas: o garçom também cria e renomeia ===== */
+const novaMesa=()=>pedirTexto("Nome da nova mesa","Mesa "+(S.mesas.length+1),n=>
+ db.collection("mesas").add({nome:n,ord:Date.now(),ativa:true})
+  .then(()=>toast("Mesa criada")).catch(e=>toast("Sem permissão: "+e.code)));
+function renomearMesa(id){const m=S.mesas.find(x=>x.id===id);if(!m)return;
+ pedirTexto("Renomear mesa",m.nome,n=>
+  db.collection("mesas").doc(id).update({nome:n}).then(()=>{
+   toast("Mesa renomeada");
+   /* pedidos abertos guardam o nome da mesa: atualiza pra cozinha não ver o nome antigo */
+   S.peds.filter(p=>p.mesaId===id).forEach(p=>db.collection("pedidos").doc(p.id).update({mesaNome:n}).catch(()=>{}));
+  }).catch(e=>toast("Sem permissão: "+e.code)))}
+const removerUser=id=>{const u=S.users.find(x=>x.id===id);u&&confirmar("Remover "+u.nome+"?","O acesso ao aplicativo será removido.",()=>db.collection("users").doc(id).delete().catch(e=>toast("Erro: "+e.code)),1)};
+function guardarUltima(c){try{localStorage.setItem("ultimaComanda",JSON.stringify(c))}catch(e){}}
+function abrirUltima(){let c=null;try{c=JSON.parse(localStorage.getItem("ultimaComanda"))}catch(e){}
+ if(!c)return toast("Nenhuma comanda salva neste aparelho");mostrarComanda(c);st("Última comanda fechada neste aparelho")}
+
+function fechar(){
+ const m=S.mesas.find(x=>x.id===S.mesa),ps=S.peds.filter(p=>p.mesaId===S.mesa);
+ if(!m||!ps.length)return;
+ confirmar("Fechar a conta?",m.nome+" · "+money(tot(ps)),()=>fecharConta(m,ps))}
+function fecharConta(m,ps){
+ const c=montarComanda(m,ps),b=db.batch(),agora=Date.now();
+ ps.forEach(p=>b.update(db.collection("pedidos").doc(p.id),{aberto:false,fechadoEm:agora}));
+ guardarUltima(c);mostrarComanda(c);st("Fechando conta…");
+ const r=b.commit();imprimir(c);
+ r.then(()=>{toast("Conta fechada");st("✅ Conta fechada")})
+  .catch(e=>{toast("Erro: "+e.code);st("⚠️ A conta NÃO foi fechada ("+e.code+")")})}
+
+/* ===== RELATÓRIOS (admin) ===== */
+const VIRADA=5; // o "dia de vendas" só vira às 5h da manhã: venda feita à 1h conta no dia anterior
+const PERS=[["hoje","Hoje"],["7d","7 dias"],["30d","30 dias"],["mes","Este mês"]];
+S.rel={per:"7d",dados:{},carregando:false,erro:""};
+const p2=n=>String(n).padStart(2,"0"),
+ baseDia=()=>{const d=new Date(Date.now()-VIRADA*36e5);return[d.getFullYear(),d.getMonth(),d.getDate()]},
+ iniPer=p=>{const[y,m,d]=baseDia();return Math.max(S.cfg.relDesde||0,new Date(y,m,p==="hoje"?d:p==="7d"?d-6:p==="30d"?d-29:1,VIRADA).getTime())},
+ dk=ts=>{const d=new Date(ts-VIRADA*36e5);return d.getFullYear()+"-"+p2(d.getMonth()+1)+"-"+p2(d.getDate())},
+ curto=n=>n>=1000?(n/1000).toFixed(1).replace(".",",").replace(",0","")+"k":String(Math.round(n)),
+ SEM=["dom","seg","ter","qua","qui","sex","sáb"];
+
+async function carregarRel(){
+ const R=S.rel,per=R.per;if(R.carregando)return;R.carregando=true;R.erro="";
+ try{const ini=iniPer(per),s=await db.collection("pedidos").where("fechadoEm",">=",ini).get();
+  R.dados[per]={peds:s.docs.map(d=>d.data()),ini,quando:Date.now()}}
+ catch(e){R.erro=e.code||String(e)}
+ R.carregando=false;render()}
+const relRef=()=>{S.rel.erro="";carregarRel();render()};
+
+function agregar(peds,ini,per){
+ const dias=new Map(),horas=Array(24).fill(0),prods=new Map(),garc=new Map(),contas=new Set();let total=0,itens=0;
+ peds.forEach(p=>{const its=p.itens||[],v=its.reduce((a,i)=>a+i.preco*i.qty,0),f=p.fechadoEm;total+=v;
+  dias.set(dk(f),(dias.get(dk(f))||0)+v);
+  horas[(new Date(f).getHours()-VIRADA+24)%24]+=v;
+  const g=p.garcomNome||"?";garc.set(g,(garc.get(g)||0)+v);
+  contas.add(p.mesaId+"|"+Math.floor(f/2000));
+  its.forEach(i=>{const k=i.nome+"|"+i.preco,x=prods.get(k)||{nome:i.nome,preco:i.preco,qty:0,valor:0};
+   x.qty+=i.qty;x.valor+=i.preco*i.qty;itens+=i.qty;prods.set(k,x)})});
+ /* série por dia: preenche também os dias sem venda */
+ const serie=[],cur=new Date(ini),hoje=dk(Date.now());
+ for(let n=0;n<400;n++){const k=dk(cur.getTime()),sd=new Date(cur.getTime()-VIRADA*36e5);
+  serie.push({k,v:dias.get(k)||0,l:per==="7d"?SEM[sd.getDay()]+" "+sd.getDate():String(sd.getDate()),
+   full:sd.toLocaleDateString("pt-BR",{weekday:"short",day:"2-digit",month:"2-digit"})});
+  if(k>=hoje)break;cur.setDate(cur.getDate()+1)}
+ /* série por hora (usada no "Hoje"): corta as horas vazias das pontas */
+ let h=horas.map((v,k)=>({v,l:((VIRADA+k)%24)+"h",full:((VIRADA+k)%24)+"h"}));
+ const a=h.findIndex(x=>x.v>0),z=h.length-1-[...h].reverse().findIndex(x=>x.v>0);
+ h=a<0?[]:h.slice(a,z+1);
+ const nomes={};[...prods.values()].forEach(x=>{(nomes[x.nome]=nomes[x.nome]||new Set()).add(x.preco)});
+ const top=[...prods.values()].sort((x,y)=>y.qty-x.qty||y.valor-x.valor).slice(0,10)
+  .map(x=>({...x,n:nomes[x.nome].size>1?x.nome+" ("+brl(x.preco)+")":x.nome}));
+ return{total,itens,contas:contas.size,serie,horas:h,top,garc:[...garc].map(([n,v])=>({n,v})).sort((x,y)=>y.v-x.v)}}
+
+const colunas=it=>{const mx=Math.max(1,...it.map(x=>x.v)),n=it.length,H=130,step=n>14?Math.ceil(n/8):1;
+ return `<div class="cols">${it.map((x,k)=>`<div class="col"><span class="v">${n<=10&&x.v?curto(x.v):""}</span><i class="b${x.v?"":" z"}" style="height:${x.v?Math.max(3,Math.round(x.v/mx*H)):2}px"></i><span class="l">${k%step===0?esc(x.l):""}</span></div>`).join("")}</div>`};
+const hbar=(rows,fmt)=>{const mx=Math.max(1,...rows.map(r=>r.v));
+ return rows.map(r=>`<div><div class="hl"><span>${esc(r.n)}</span><b>${fmt(r)}</b></div><div class="ht"><i style="width:${Math.round(r.v/mx*100)}%"></i></div></div>`).join("")};
+
+function zerarRel(){
+ confirmar("Zerar os relatórios?","As vendas feitas até agora deixam de aparecer nos números e gráficos. Nada é apagado do sistema, e dá pra voltar a contar tudo depois.",()=>defDesde(Date.now()),1)}
+function voltarRel(){confirmar("Voltar a contar tudo?","Todas as vendas, inclusive as de teste, voltam a aparecer nos relatórios.",()=>defDesde(0))}
+function defDesde(t){db.collection("config").doc("app").set({relDesde:t},{merge:true})
+ .then(()=>{S.cfg.relDesde=t;S.rel.dados={};S.rel.erro="";render();toast(t?"Relatórios zerados":"Contando todas as vendas")})
+ .catch(e=>toast("Erro: "+e.code))}
+function vRel(){
+ const R=S.rel,d=R.dados[R.per];
+ if(!R.carregando&&!R.erro&&(!d||Date.now()-d.quando>18e4))carregarRel();
+ const chips=`<div class="chips">${PERS.map(([k,n])=>`<button class="${R.per===k?"pri":""}" onclick="S.rel.per='${k}';S.rel.erro='';render()">${n}</button>`).join("")}<button onclick="relRef()">🔄 Atualizar</button></div>`;
+ if(R.erro)return chips+`<div class="card"><p>Não foi possível carregar os relatórios (${esc(R.erro)}).</p><button class="pri" onclick="relRef()">Tentar de novo</button></div>`;
+ if(!d)return chips+'<div class="card"><p class="m">Carregando…</p></div>';
+ const A=agregar(d.peds,d.ini,R.per),hora=new Date(d.quando),
+  info=`<p class="m" style="margin:0 0 10px">Atualizado às ${p2(hora.getHours())}:${p2(hora.getMinutes())}${R.carregando?" · atualizando…":""} · o dia de vendas vira às ${VIRADA}h</p>`,
+  rodape=`<div class="card"><h3>Zerar relatórios</h3><p class="m" style="margin:0 0 10px">${S.cfg.relDesde?"Contando só as vendas feitas depois de "+new Date(S.cfg.relDesde).toLocaleString("pt-BR",{day:"2-digit",month:"2-digit",hour:"2-digit",minute:"2-digit"})+".":"Use depois dos testes pra começar a contar do zero. Nada é apagado do sistema."}</p><div class="row"><button class="bad" onclick="zerarRel()">Zerar relatórios</button>${S.cfg.relDesde?'<button onclick="voltarRel()">Voltar a contar tudo</button>':""}</div></div>`;
+ if(!A.contas)return chips+info+'<div class="card"><p class="m">Nenhuma conta fechada neste período.</p></div>'+rodape;
+ const kpi=(t,v)=>`<div class="kpi"><small>${t}</small><b>${v}</b></div>`,
+  porHora=R.per==="hoje",ser=porHora?A.horas:A.serie,melhor=ser.reduce((m,x)=>x.v>m.v?x:m,{v:-1});
+ return chips+info+`<div class="g" style="margin-bottom:12px">${kpi("Total vendido",brl(A.total))}${kpi("Contas fechadas",A.contas)}${kpi("Ticket médio",brl(A.total/A.contas))}${kpi("Itens vendidos",A.itens)}</div>
+<div class="card"><h3>${porHora?"Vendas por hora":"Vendas por dia"} <small class="m">(R$)</small></h3>${colunas(ser)}<p class="m" style="margin:8px 0 0">${porHora?"Melhor horário":"Melhor dia"}: <b style="color:var(--t)">${esc(melhor.full)}</b> · ${brl(melhor.v)}</p>
+<details style="margin-top:8px"><summary class="m" style="cursor:pointer;min-height:32px">Ver valores ${porHora?"por hora":"por dia"}</summary>${ser.map(x=>`<div class="ln"><span>${esc(x.full)}</span><b>${brl(x.v)}</b></div>`).join("")}</details></div>
+<div class="card"><h3>Mais vendidos</h3>${hbar(A.top.map(x=>({n:x.n,v:x.qty,valor:x.valor})),r=>r.v+" un · "+brl(r.valor))}</div>
+<div class="card"><h3>Vendas por garçom</h3>${hbar(A.garc,r=>brl(r.v))}</div>${rodape}`}
+
+function vEquipe(){return `<div class="card"><h3>Novo funcionário</h3><div class="row"><input id="en" placeholder="Nome"><input id="eu" placeholder="Usuário (a-z, 0-9)" autocapitalize="none"><input id="ep" placeholder="Senha (mín. 6)"><select id="er"><option value="garcom">Garçom</option><option value="cozinha">Cozinha</option><option value="churrasqueiro">Churrasqueiro</option><option value="admin">Administrador</option></select></div><button class="pri" style="margin-top:10px" onclick="criar()">Criar conta</button></div><div class="card">${S.users.map(u=>`<div class="ln"><div><b>${esc(u.nome)}</b> <span class="m">${esc(u.usuario)} · ${u.role}${u.ativo===false?" · inativo":""}</span></div>${u.id===S.u.uid?"":`<div class="row" style="flex:0 0 auto;flex-wrap:nowrap"><button onclick="db.collection('users').doc('${u.id}').update({ativo:${u.ativo===false}})">${u.ativo===false?"Ativar":"Desativar"}</button><button class="bad" onclick="removerUser('${u.id}')">Remover</button></div>`}</div>`).join("")}</div>`}
+async function criar(){const nome=$("#en").value.trim(),us=$("#eu").value.trim().toLowerCase(),pw=$("#ep").value,role=$("#er").value;
+ if(!nome||!/^[a-z0-9._-]{3,}$/.test(us)||pw.length<6)return toast("Preencha nome, usuário (a-z, 0-9) e senha (6+)");
+ const sec=firebase.apps.find(a=>a.name==="sec")||firebase.initializeApp(CFG,"sec");
+ try{const c=await sec.auth().createUserWithEmailAndPassword(us+DOM,pw);await db.collection("users").doc(c.user.uid).set({nome,usuario:us,role,ativo:true});await sec.auth().signOut();toast("Conta criada: "+us);["#en","#eu","#ep"].forEach(i=>$(i).value="")}
+ catch(e){toast(e.code==="auth/email-already-in-use"?"Esse usuário já existe":"Erro: "+e.code)}}
+function vMesasAdm(){return `<div class="card"><div class="row"><input id="mn" placeholder="Nome (ex.: Mesa 13)"><button class="pri" onclick="addMesa()">Adicionar mesa</button>${S.mesas.length?"":'<button onclick="seedMesas()">Criar Mesas 1–12</button>'}</div></div><div class="card">${S.mesas.map(m=>`<div class="ln"><div><b>${esc(m.nome)}</b>${m.ativa===false?' <span class="m">· inativa</span>':""}</div><div class="row" style="flex:0 0 auto;flex-wrap:nowrap"><button onclick="renMesa('${m.id}')">Editar</button><button onclick="db.collection('mesas').doc('${m.id}').update({ativa:${m.ativa===false}})">${m.ativa===false?"Ativar":"Desativar"}</button></div></div>`).join("")}</div>`}
+const addMesa=()=>{const n=$("#mn").value.trim();n&&db.collection("mesas").add({nome:n,ord:Date.now(),ativa:true})};
+const seedMesas=()=>{const b=db.batch();for(let i=1;i<=12;i++)b.set(db.collection("mesas").doc(),{nome:"Mesa "+i,ord:i,ativa:true});b.commit()};
+const renMesa=renomearMesa;
+function vProdAdm(){return `<div class="card"><h3>Novo produto</h3><div class="row"><input id="pn" placeholder="Nome"><input id="pv" placeholder="Preço" inputmode="decimal"><input id="pc" placeholder="Categoria" list="cl"><datalist id="cl">${[...new Set(S.prods.map(p=>p.cat))].map(c=>`<option value="${esc(c)}">`).join("")}</datalist></div><label><input type="checkbox" id="pp" checked style="width:auto;min-height:0"> Precisa de preparo (vai para a cozinha)</label><div class="row" style="margin-top:10px"><button class="pri" onclick="addP()">Adicionar</button>${S.prods.length?"":'<button onclick="seed()">Carregar cardápio padrão</button>'}</div></div>${pubCard()}${barraProd()}${listaProd()}${selBar()}`}
+function addP(){const nome=$("#pn").value.trim(),preco=parseFloat($("#pv").value.replace(",",".")),cat=$("#pc").value.trim();if(!nome||!(preco>0)||!cat)return toast("Preencha nome, preço e categoria");db.collection("produtos").add({nome,preco,cat,prep:$("#pp").checked,ativo:true}).then(()=>["#pn","#pv"].forEach(i=>$(i).value=""))}
+const fmtP=n=>Number(n).toFixed(2).replace(".",",");
+const nz=s=>String(s??"").normalize("NFD").replace(/[\u0300-\u036f]/g,"").toLowerCase();
+S.psel=new Set();S.pmode=false;S.pq="";
+const barraProd=()=>`<div class="card"><div class="row" style="align-items:center"><input id="pq" type="search" placeholder="🔍 Buscar produto…" value="${esc(S.pq)}" oninput="S.pq=this.value;filtraProd()" style="flex:2 1 150px"><button class="${S.pmode?"pri":""}" onclick="modoSel()">${S.pmode?"✔ Concluir":"☑️ Selecionar vários"}</button></div>${S.pmode?'<p class="m" style="margin:10px 0 0">Toque nos produtos para marcar e depois use o botão <b>Remover</b>.</p>':""}</div>`;
+const selBar=()=>S.pmode&&S.psel.size?`<div class="sendbar"><div><b>${S.psel.size} selecionado${S.psel.size>1?"s":""}</b><small><a href="#" onclick="S.psel.clear();render();return false" style="color:var(--m)">limpar seleção</a></small></div><button class="danger" onclick="remSel()">🗑️ Remover</button></div>`:"";
+function modoSel(){S.pmode=!S.pmode;S.psel.clear();render()}
+function selP(id,on){on?S.psel.add(id):S.psel.delete(id);render()}
+function selCat(c){const q=nz(S.pq),ids=S.prods.filter(p=>p.cat===c&&(!q||nz(p.nome+" "+p.cat).includes(q))).map(p=>p.id),todos=ids.every(id=>S.psel.has(id));
+ ids.forEach(id=>todos?S.psel.delete(id):S.psel.add(id));render()}
+function filtraProd(){const q=nz(S.pq);document.querySelectorAll("#app [data-pc]").forEach(c=>{let n=0;
+ c.querySelectorAll("[data-n]").forEach(r=>{const ok=!q||r.dataset.n.includes(q);r.classList.toggle("hid",!ok);if(ok)n++});c.classList.toggle("hid",!n)})}
+const linhaProd=(p,q)=>{const key=nz(p.nome+" "+p.cat),ok=!q||key.includes(q),off=p.ativo===false,
+ nome=`<b>${esc(p.nome)}</b>${p.fv?" 📷":""}${p.hh?" 🍻":""}${off?'<div class="m">fora do cardápio</div>':""}`;
+ return S.pmode
+ ?`<label class="ln sl${ok?"":" hid"}${S.psel.has(p.id)?" on2":""}" data-n="${esc(key)}"${off?' style="opacity:.6"':""}><input type="checkbox" ${S.psel.has(p.id)?"checked":""} onchange="selP('${p.id}',this.checked)"><span style="flex:1;min-width:0">${nome}</span><span class="m">${money(p.preco)}</span></label>`
+ :`<div class="ln${ok?"":" hid"}" data-n="${esc(key)}"${off?' style="opacity:.55"':""}><div style="flex:1;min-width:0">${nome}</div><input class="pi" inputmode="decimal" value="${fmtP(p.preco)}" onchange="setPreco('${p.id}',this.value)" aria-label="Preço"><div class="acts"><button onclick="editP('${p.id}')" aria-label="Editar">✏️</button><button class="bad" onclick="remP('${p.id}')" aria-label="Remover">🗑️</button></div></div>`};
+function listaProd(){const q=nz(S.pq),por={};S.prods.forEach(p=>(por[p.cat]=por[p.cat]||[]).push(p));
+ return Object.keys(por).sort().map(c=>{const l=por[c],ids=l.filter(p=>!q||nz(p.nome+" "+p.cat).includes(q)).map(p=>p.id),todos=ids.length&&ids.every(id=>S.psel.has(id));
+  return `<div class="card${ids.length?"":" hid"}" data-pc><div class="ln" style="border:0;padding:0 0 6px"><h3 style="margin:0">${esc(c)}</h3>${S.pmode?`<button data-c="${esc(c)}" onclick="selCat(this.dataset.c)">${todos?"Desmarcar":"Marcar todos"}</button>`:""}</div>${l.map(p=>linhaProd(p,q)).join("")}</div>`}).join("")||'<div class="card"><p class="m" style="margin:0">Nenhum produto cadastrado.</p></div>'}
+function remP(id){const p=S.prods.find(x=>x.id===id);if(!p)return;
+ confirmar("Remover "+p.nome+"?","Ele sai do cardápio de vez. Pedidos já feitos não mudam. Se só quer esconder por um tempo, use ✏️ e desmarque “Disponível”.",()=>apagarProds([id]),1)}
+function remSel(){const ids=[...S.psel].filter(id=>S.prods.some(p=>p.id===id));if(!ids.length)return;
+ const nomes=ids.slice(0,3).map(id=>S.prods.find(p=>p.id===id).nome).join(", ")+(ids.length>3?" e mais "+(ids.length-3):"");
+ confirmar("Remover "+ids.length+(ids.length===1?" produto?":" produtos?"),nomes+". Eles saem do cardápio de vez. Pedidos já feitos não mudam.",()=>apagarProds(ids),1)}
+async function apagarProds(ids){const fotos=ids.filter(id=>{const p=S.prods.find(x=>x.id===id);return p&&p.fv});
+ try{for(let i=0;i<ids.length;i+=400){const b=db.batch();ids.slice(i,i+400).forEach(id=>b.delete(db.collection("produtos").doc(id)));await b.commit()}
+  fotos.forEach(id=>db.collection("fotos").doc(id).delete().catch(()=>{}));
+  ids.forEach(id=>S.psel.delete(id));toast(ids.length===1?"Produto removido":ids.length+" produtos removidos");render()}
+ catch(e){toast("Erro ao remover: "+(e.code||e.message))}}
+function setPreco(id,v){const n=parseFloat(String(v).replace(",","."));if(!(n>0)){toast("Preço inválido");return render()}
+ db.collection("produtos").doc(id).update({preco:n}).then(()=>toast("Preço salvo")).catch(e=>toast("Erro: "+e.code))}
+const redim=f=>new Promise((ok,no)=>{const i=new Image();i.onload=()=>{const c=document.createElement("canvas");c.width=c.height=200;const s=Math.min(i.width,i.height);c.getContext("2d").drawImage(i,(i.width-s)/2,(i.height-s)/2,s,s,0,0,200,200);ok(c.toDataURL("image/jpeg",.75))};i.onerror=no;i.src=URL.createObjectURL(f)});
+function editP(id){const p=S.prods.find(x=>x.id===id);if(!p)return;let img=null,rm=false;
+ const cats=[...new Set(S.prods.map(x=>x.cat))],chk='style="width:auto;min-height:0"';
+ modal(`<h3>Editar produto</h3><label>Nome</label><input id="ep_n" maxlength="60" value="${esc(p.nome)}"><label>Preço</label><input id="ep_v" inputmode="decimal" value="${fmtP(p.preco)}"><label>Categoria</label><input id="ep_c" list="ep_l" value="${esc(p.cat)}"><datalist id="ep_l">${cats.map(c=>`<option value="${esc(c)}">`).join("")}</datalist><label><input type="checkbox" id="ep_p" ${p.prep?"checked":""} ${chk}> Precisa de preparo (vai pra cozinha)</label><label><input type="checkbox" id="ep_a" ${p.ativo===false?"":"checked"} ${chk}> Disponível (aparece no cardápio e pro garçom)</label><label>Foto (opcional)</label><div class="row" style="align-items:center;flex-wrap:nowrap"><img id="ep_i" class="ph" alt="" style="display:none"><input id="ep_f" type="file" accept="image/*"></div><button id="ep_r" style="margin-top:8px;display:none">Remover foto</button><div class="row" style="margin-top:12px"><button class="pri" id="ep_ok">Salvar</button><button onclick="fecharCmd()">Cancelar</button></div><button class="bad" id="ep_d" style="width:100%;margin-top:10px">🗑️ Remover produto</button>`,()=>{
+  $("#ep_d").onclick=()=>{fecharCmd();remP(id)};
+  const show=u=>{$("#ep_i").src=u;$("#ep_i").style.display="block";$("#ep_r").style.display="block"};
+  if(p.fv)db.collection("fotos").doc(id).get().then(d=>{if(d.exists&&$("#ep_i")&&!img&&!rm)show(d.data().img)}).catch(()=>{});
+  $("#ep_f").onchange=e=>{const f=e.target.files[0];f&&redim(f).then(u=>{img=u;rm=false;show(u)}).catch(()=>toast("Não consegui ler essa imagem"))};
+  $("#ep_r").onclick=()=>{img=null;rm=true;$("#ep_i").style.display="none";$("#ep_r").style.display="none";$("#ep_f").value=""};
+  $("#ep_ok").onclick=async()=>{const n=$("#ep_n").value.trim(),v=parseFloat($("#ep_v").value.replace(",",".")),c=$("#ep_c").value.trim();
+   if(!n||!(v>0)||!c)return toast("Informe nome, preço e categoria");
+   const up={nome:n,preco:v,cat:c,prep:$("#ep_p").checked,ativo:$("#ep_a").checked};
+   try{if(img){const ts=Date.now();await db.collection("fotos").doc(id).set({img,ts});up.fv=ts}
+    else if(rm&&p.fv){await db.collection("fotos").doc(id).delete();up.fv=firebase.firestore.FieldValue.delete()}
+    await db.collection("produtos").doc(id).update(up);fecharCmd();toast("Produto salvo")}
+   catch(e){toast("Erro: "+(e.code||e.message))}}})}
+function seed(){const b=db.batch();SEED.split(";").forEach(c=>{const[h,l]=c.split("|"),[cat,pr]=h.split("*");l.split(",").forEach(x=>{const[n,v]=x.split(":");b.set(db.collection("produtos").doc(),{nome:n,preco:+v,cat,prep:pr==="1",ativo:true})})});b.commit().then(()=>toast("Cardápio carregado"))}
+
+/* ===== CARDÁPIO DOS CLIENTES =====
+   O site cardapio.html lê UM único documento (publico/cardapio) em vez de um por produto: gasta bem menos leituras do Firebase.
+   Este app (só quando o admin está logado) regrava esse documento sozinho, uns segundos depois de mudar produto, preço, foto, Happy Hour ou nome/cor/logo.
+   Só escreve se o conteúdo realmente mudou. */
+const CATORD=["Espetinhos","Pão de alho","Pra beliscar","Pastéis","Caldinhos","Dindin gourmet","Cervejas 600ml","Sucos","Cachaças 300ml","Doses"];
+const hashS=t=>{let h=5381;for(let i=0;i<t.length;i++)h=((h<<5)+h+t.charCodeAt(i))|0;return h+":"+t.length};
+function montarPub(){const c=S.cfg,o=x=>{const i=CATORD.findIndex(y=>y.toLowerCase()===String(x).trim().toLowerCase());return i<0?99:i};
+ const itens=S.prods.filter(p=>p.ativo!==false).sort((a,b)=>o(a.cat)-o(b.cat)||String(a.cat).localeCompare(b.cat)||a.preco-b.preco||a.nome.localeCompare(b.nome))
+  .map(p=>{const i={id:p.id,n:p.nome,p:p.preco,c:p.cat};if(p.hh&&p.hhPreco>0)i.hp=p.hhPreco;if(p.fv)i.f=p.fv;return i});
+ return{nome:c.nome,cor:c.cor,logo:c.logo||"",hhOn:c.hhOn!==false,hhIni:c.hhIni||"17:00",hhFim:c.hhFim||"20:00",itens}}
+let pubT=null;
+const agendaPub=()=>{clearTimeout(pubT);pubT=setTimeout(()=>publicar(false),4000)};
+function publicar(manual){if(!S.u||S.u.role!=="admin")return;
+ if(!S.prods.length)return manual&&toast("Cadastre produtos antes de publicar");
+ const j=JSON.stringify(montarPub()),h=hashS(j);let ult=null;try{ult=localStorage.getItem("pubH")}catch(e){}
+ if(!manual&&h===ult)return;
+ db.collection("publico").doc("cardapio").set({json:j,ts:Date.now()})
+  .then(()=>{try{localStorage.setItem("pubH",h)}catch(e){}S.pubTs=Date.now();if(manual)toast("Cardápio publicado");render()})
+  .catch(e=>{if(manual)toast("Erro: "+e.code)})}
+const pubCard=()=>`<div class="card"><h3>🌐 Cardápio dos clientes</h3><p class="m" style="margin:0 0 10px">Atualiza sozinho quando você muda produtos, preços, fotos ou Happy Hour.${S.pubTs?" Última publicação: "+new Date(S.pubTs).toLocaleTimeString("pt-BR",{hour:"2-digit",minute:"2-digit"})+".":""}</p><button onclick="publicar(true)">Publicar agora</button></div>`;
+
+/* ===== aba Happy Hour (admin) ===== */
+function vHH(){const h=hhInfo(),c=S.cfg,por={},n=S.prods.filter(p=>p.hh).length;
+ S.prods.forEach(p=>(por[p.cat]=por[p.cat]||[]).push(p));
+ return `<div class="card"><h3>🍻 Happy Hour</h3><p class="m" style="margin:0 0 6px">${h?"Acontecendo agora · termina às "+esc(h.fim):"Fora do horário agora"} · ${n} produto${n===1?"":"s"} no Happy Hour</p>
+<label class="hhl" style="color:var(--t);font-size:16px;min-height:48px;margin:6px 0"><input type="checkbox" id="hon" ${c.hhOn===false?"":"checked"} onchange="saveHH()"> Happy Hour ligado</label>
+<div class="hht"><div><label>Começa</label><input id="hi" type="time" value="${esc(c.hhIni||"17:00")}" onchange="saveHH()"></div><div><label>Termina</label><input id="hf" type="time" value="${esc(c.hhFim||"20:00")}" onchange="saveHH()"></div></div>
+<p class="m" style="margin:10px 0 0;font-size:13px">O horário é salvo automaticamente ao mudar.</p></div>
+<div class="card"><p class="m" style="margin:0">Marque os produtos que entram no Happy Hour e coloque o preço promocional. Só durante o horário o preço promocional vale; depois o preço normal volta sozinho, no app e no cardápio dos clientes.</p></div>
+${Object.keys(por).sort().map(cat=>`<div class="card"><h3>${esc(cat)}</h3>${por[cat].map(p=>`<div class="ln hr${p.hh?" on3":""}"><label class="hhl" style="flex:1 1 150px;min-width:0;margin:0;min-height:52px;color:var(--t);font-size:16px"><input type="checkbox" ${p.hh?"checked":""} onchange="hhMarcar('${p.id}',this.checked)"><span><b>${esc(p.nome)}</b><br><small class="m">normal ${money(p.preco)}</small>${p.hh&&!(p.hhPreco<p.preco)?'<br><small style="color:#ffb21a">⚠️ defina um preço menor que o normal</small>':""}</span></label>${p.hh?`<div class="hp2"><small class="m">Preço no HH</small><input class="pi" inputmode="decimal" value="${fmtP(p.hhPreco||p.preco)}" onchange="setHHPreco('${p.id}',this.value)" aria-label="Preço no Happy Hour"></div>`:""}</div>`).join("")}</div>`).join("")}`}
+function hhMarcar(id,on){const p=S.prods.find(x=>x.id===id);if(!p)return;
+ const o={hh:on};if(on&&!(p.hhPreco>0))o.hhPreco=p.preco;
+ db.collection("produtos").doc(id).update(o).then(()=>{if(on&&!(p.hhPreco>0))toast("Agora defina o preço do Happy Hour")}).catch(e=>toast("Erro: "+e.code))}
+function setHHPreco(id,v){const n=parseFloat(String(v).replace(",","."));if(!(n>0)){toast("Preço inválido");return render()}
+ db.collection("produtos").doc(id).update({hhPreco:n}).then(()=>toast("Preço do Happy Hour salvo")).catch(e=>toast("Erro: "+e.code))}
+/* salva sozinho ao mexer. Aplica na tela na hora (assim o app não "desfaz" o que você escolheu ao redesenhar) e grava no servidor logo depois */
+let hhT=null;
+function saveHH(){const o={hhOn:$("#hon").checked,hhIni:$("#hi").value,hhFim:$("#hf").value};
+ if(!o.hhIni||!o.hhFim)return;
+ if(o.hhIni===o.hhFim)return toast("Início e fim precisam ser horários diferentes");
+ const ant={hhOn:S.cfg.hhOn,hhIni:S.cfg.hhIni,hhFim:S.cfg.hhFim};Object.assign(S.cfg,o);
+ clearTimeout(hhT);hhT=setTimeout(()=>db.collection("config").doc("app").set({hhOn:S.cfg.hhOn,hhIni:S.cfg.hhIni,hhFim:S.cfg.hhFim},{merge:true})
+  .then(()=>toast("Happy Hour salvo")).catch(e=>{Object.assign(S.cfg,ant);render();toast("Erro: "+e.code)}),500)}
+const vCfg=()=>`<div class="card"><label>Nome exibido no aplicativo</label><input id="cn" value="${esc(S.cfg.nome)}"><label>Cor principal</label><input id="cc" type="color" value="${esc(S.cfg.cor)}"><label>Logo (imagem quadrada)</label><input id="cl" type="file" accept="image/*"><button class="pri" style="margin-top:14px" onclick="saveCfg()">Salvar</button></div>`;
+async function saveCfg(){const o={nome:$("#cn").value.trim()||"Espetinhos",cor:$("#cc").value},f=$("#cl").files[0];
+ if(f)o.logo=await new Promise(r=>{const i=new Image();i.onload=()=>{const c=document.createElement("canvas");c.width=c.height=128;const s=Math.min(i.width,i.height);c.getContext("2d").drawImage(i,(i.width-s)/2,(i.height-s)/2,s,s,0,0,128,128);r(c.toDataURL("image/jpeg",.8))};i.src=URL.createObjectURL(f)});
+ db.collection("config").doc("app").set(o,{merge:true}).then(()=>toast("Configurações salvas")).catch(e=>toast("Erro: "+e.code))}
+if("serviceWorker"in navigator&&location.protocol!=="file:")addEventListener("load",()=>navigator.serviceWorker.register("./sw.js").catch(()=>{}));
+</script></body></html>
