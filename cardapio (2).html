@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="pt-BR"><head><meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#0a0a0a">
+<meta name="description" content="Cardápio de espetinhos, petiscos e bebidas">
+<title>Cardápio</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Bebas+Neue&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#0a0a0a;--p:#1a1512;--ln:#3a2c22;--t:#fff;--m:#a79b8f;--acc:#ff6a1a;--hh:#ffb21a;
+ --fd:"Bebas Neue","Arial Narrow","Roboto Condensed",Impact,sans-serif;--fa:"Anton","Bebas Neue",Impact,"Arial Narrow",sans-serif}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;-webkit-tap-highlight-color:transparent}
+@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}*{transition:none!important;animation:none!important}}
+body{margin:0;background:var(--bg);color:var(--t);font:17px/1.4 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;padding:env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);min-height:100vh;overflow-x:hidden}
+body::before{content:"";position:fixed;inset:0;z-index:-2;pointer-events:none;background:radial-gradient(100% 38% at 50% 115%,color-mix(in srgb,var(--acc) 30%,transparent),transparent 70%)}
+.wrap{max-width:640px;margin:0 auto;padding:0 16px}
+button,input{font:inherit;color:inherit}
+:focus-visible{outline:3px solid var(--hh);outline-offset:2px}
+
+/* enfeites do flyer: pontos laranja nas laterais e grade de pontos amarelos nos cantos */
+.deco{position:fixed;top:150px;bottom:150px;width:min(15vw,120px);z-index:-1;pointer-events:none;opacity:.55;
+ background:radial-gradient(circle,var(--acc) 1px,transparent 1.6px) 0 0/6px 6px;
+ -webkit-mask-image:linear-gradient(var(--dir,90deg),#000,transparent);mask-image:linear-gradient(var(--dir,90deg),#000,transparent)}
+.deco.l{left:0}.deco.r{right:0;--dir:270deg}
+.dots{position:absolute;top:16px;width:92px;height:118px;z-index:-1;pointer-events:none;background:radial-gradient(circle,var(--hh) 3.5px,transparent 4px) 0 0/23px 23px}
+.dots.l{left:14px}.dots.r{right:14px}
+@media(max-width:520px){.dots{width:60px;height:78px;background-size:15px 15px;top:12px}.dots.l{left:8px}.dots.r{right:8px}.deco{opacity:.35}}
+
+/* selo (logo redondo) */
+.hero{padding-top:22px;text-align:center;position:relative}
+.selo{width:216px;height:216px;margin:0 auto;border-radius:50%;background:#000;border:6px solid #fff;box-shadow:0 0 0 7px var(--acc),0 14px 40px #000a;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;padding:0 18px}
+.lg{width:54px;height:54px;flex:0 0 54px;border-radius:50%;overflow:hidden;display:grid;place-items:center;font-size:30px;margin-bottom:2px}
+.lg img{width:100%;height:100%;object-fit:cover}
+.selo b{font:400 clamp(30px,9vw,38px)/.95 var(--fd);letter-spacing:.02em;text-transform:uppercase;overflow-wrap:break-word;word-break:normal}
+.selo small{font:400 15px/1 var(--fd);letter-spacing:.16em;color:#e8ddd2;margin-top:4px;text-transform:uppercase}
+.selo small:empty{display:none}
+.selo i{display:block;width:96px;height:2px;margin-top:8px;background:var(--acc);position:relative}
+.selo i::after{content:"";position:absolute;left:50%;top:50%;width:9px;height:9px;margin:-4.5px;background:var(--acc);transform:rotate(45deg);box-shadow:0 0 0 3px #000}
+
+/* Happy Hour */
+#hh{margin-top:20px}
+.hhtit{display:flex;align-items:center;justify-content:space-between;gap:10px;text-align:left}
+.tt{font:400 clamp(54px,17vw,86px)/.86 var(--fa);text-transform:uppercase;transform:rotate(-2deg);transform-origin:left center}
+.tt span{display:block}.tt .o{color:var(--acc);text-shadow:0 3px 0 #0006}
+.stk{flex:0 0 auto;width:104px;height:104px;border-radius:50%;background:var(--hh);color:#1b0f06;display:flex;flex-direction:column;align-items:center;justify-content:center;transform:rotate(8deg);outline:2px dashed #1b0f06;outline-offset:-7px}
+.stk small{font:400 17px/1 var(--fd);letter-spacing:.06em;text-transform:uppercase}
+.stk b{font:400 30px/1 var(--fa);letter-spacing:.01em;text-transform:uppercase}
+.stk.w{background:#e5483f;color:#fff;outline-color:#fff}
+.pill{display:flex;align-items:center;justify-content:center;gap:10px;margin-top:14px;padding:10px 14px;border:1.5px solid var(--hh);border-radius:10px;font:400 20px/1.1 var(--fd);letter-spacing:.03em;text-transform:uppercase}
+.pill b{font-weight:400;color:var(--acc)}.pill svg{flex:0 0 26px;width:26px;height:26px;stroke:var(--hh)}
+
+/* categorias (fixas ao rolar) */
+.nav{position:sticky;top:0;z-index:5;margin-top:18px;background:#0a0a0aeb;-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);border-bottom:1px solid var(--ln)}
+.chips{display:flex;gap:8px;overflow-x:auto;padding:10px 16px;scrollbar-width:none;max-width:640px;margin:0 auto}
+.chips::-webkit-scrollbar{display:none}
+.chip{flex:0 0 auto;min-height:44px;padding:0 18px;border-radius:6px;border:1px solid var(--ln);background:var(--p);font:400 21px/1 var(--fd);letter-spacing:.04em;text-transform:uppercase;cursor:pointer}
+.chip.on{background:var(--acc);border-color:var(--acc);color:#fff;text-shadow:0 1px 0 #0005}
+.chip.hhc{border-color:var(--hh);color:var(--hh)}.chip.hhc.on{background:var(--hh);color:#1b0f06;text-shadow:none}
+
+/* busca */
+.busca{margin:18px 0 2px}
+.busca input{width:100%;min-height:50px;padding:0 16px;border-radius:10px;border:1px solid var(--ln);background:var(--p);-webkit-appearance:none;appearance:none}
+.busca input:focus{border-color:var(--acc)}
+.busca input::placeholder{color:var(--m)}
+
+/* seções: título em faixa laranja */
+.sec{padding:22px 0 20px;scroll-margin-top:64px}
+.sec+.sec{border-top:1px solid var(--acc)}
+.rb{display:inline-block;margin:0 0 8px -16px;padding:6px 40px 3px 24px;font:400 36px/1.05 var(--fd);letter-spacing:.02em;text-transform:uppercase;color:#fff;
+ background:color-mix(in srgb,var(--acc) 86%,#000);clip-path:polygon(0 0,100% 0,calc(100% - 16px) 50%,100% 100%,0 100%,10px 50%)}
+.sec.hh .rb{background:var(--hh);color:#1b0f06}
+ul{list-style:none;margin:0;padding:0}
+.it{display:flex;align-items:baseline;gap:8px;padding:5px 0}
+.it.cf{align-items:center;padding:7px 0}
+.nm{flex:0 1 auto;min-width:0;font:400 26px/1.1 var(--fd);letter-spacing:.02em;text-transform:uppercase}
+.dt{flex:1 1 14px;min-width:14px;border-bottom:2px dotted #6b5b4e;transform:translateY(-5px)}
+.it.cf .dt{transform:none}
+.pr{flex:0 0 auto;font:400 28px/1.05 var(--fd);letter-spacing:.02em;color:var(--acc);white-space:nowrap;text-align:right}
+.pr s{display:block;color:var(--m);font-size:19px;line-height:1}
+.pr.promo{color:var(--hh)}
+.ph{flex:0 0 62px;width:62px;height:62px;border-radius:10px;background:var(--p) center/cover no-repeat;border:1px solid var(--ln)}
+
+.vazio,.erro{margin:34px 0;padding:22px;border-radius:14px;background:var(--p);border:1px solid var(--ln);text-align:center}
+.erro button{margin-top:12px;min-height:48px;padding:0 22px;border-radius:8px;border:0;background:var(--acc);color:#1b0f06;font:400 22px/1 var(--fd);letter-spacing:.04em;text-transform:uppercase;cursor:pointer}
+.aviso{margin:12px 0 0;color:var(--m);font-size:14px}
+footer{margin:30px 0 28px;color:var(--m);font-size:14px;text-align:center}
+</style></head><body>
+<i class="deco l"></i><i class="deco r"></i>
+<header class="wrap hero">
+  <i class="dots l"></i><i class="dots r"></i>
+  <div class="selo"><span class="lg" id="lg" style="display:none"></span><b id="nome">Cardápio</b><small id="tag"></small><i></i></div>
+  <div id="hh"></div>
+</header>
+<div class="nav"><div class="chips" id="chips"></div></div>
+<main class="wrap">
+  <div class="busca"><input id="q" type="search" placeholder="Buscar no cardápio" autocomplete="off" aria-label="Buscar no cardápio"></div>
+  <div id="aviso" class="aviso"></div>
+  <div id="lista"><p class="vazio" style="color:var(--m)">Carregando cardápio…</p></div>
+  <footer id="rod"></footer>
+</main>
+<noscript><p style="padding:20px">Ative o JavaScript para ver o cardápio.</p></noscript>
+<script>
+/* ===== CONFIGURAÇÃO ===== */
+const PID="espetinho-pedidos-jp",KEY="AIzaSyA0JWR3EyD6WnPLkycruhW9k0f6_kL8HK8";
+const BASE="https://firestore.googleapis.com/v1/projects/"+PID+"/databases/(default)/documents/";
+const TTL=10*60*1000;   // quanto tempo o celular reaproveita o cardápio salvo antes de ler de novo (10 min)
+const FOTOS=true;       // false = não mostra fotos (zero leituras extras)
+const SLOGAN="O melhor da cidade";   // frase pequena abaixo do nome no selo (deixe "" para esconder)
+
+/* ===== utilidades ===== */
+const $=s=>document.querySelector(s),
+ esc=s=>String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c])),
+ money=n=>n.toLocaleString("pt-BR",{style:"currency",currency:"BRL"}),
+ nz=s=>String(s??"").normalize("NFD").replace(/[\u0300-\u036f]/g,"").toLowerCase();
+let D=null,Q="",ERRO="",OFFLINE=false,ultimo={l:"",c:"",h:""};
+
+/* ===== dados: UMA leitura (documento publico/cardapio), guardada no aparelho ===== */
+const CK="cardapio_cache_v1";
+const lerCache=()=>{try{return JSON.parse(localStorage.getItem(CK))}catch(e){return null}};
+const gravaCache=o=>{try{localStorage.setItem(CK,JSON.stringify(o))}catch(e){}};
+async function buscar(){
+ const r=await fetch(BASE+"publico/cardapio?key="+KEY);
+ if(r.status===404)throw{msg:"O cardápio ainda não foi publicado."};
+ if(!r.ok)throw{msg:"Não foi possível carregar o cardápio ("+r.status+")."};
+ const f=(await r.json()).fields||{};
+ const d=JSON.parse(f.json.stringValue);d._ts=+(f.ts&&f.ts.integerValue)||0;return d}
+async function carregar(){
+ const c=lerCache();
+ if(c){D=c.d;mostrar();if(Date.now()-c.t<TTL)return}   // cópia recente: não lê nada do servidor
+ try{const d=await buscar();D=d;gravaCache({t:Date.now(),d});OFFLINE=false;ERRO=""}
+ catch(e){if(D)OFFLINE=true;else ERRO=e&&e.msg?e.msg:"Sem conexão com a internet."}
+ mostrar()}
+
+/* ===== Happy Hour (calculado no aparelho, sem ler nada) ===== */
+const temHH=()=>!!D&&D.hhOn!==false&&(D.itens||[]).some(i=>i.hp>0);
+function hhInfo(){
+ if(!temHH())return null;
+ const m=s=>{const[a,b]=String(s).split(":");return(+a||0)*60+(+b||0)},
+  a=m(D.hhIni),b=m(D.hhFim),d=new Date(),n=d.getHours()*60+d.getMinutes();
+ if(a===b||!(a<b?n>=a&&n<b:n>=a||n<b))return null;
+ return{fim:D.hhFim,rest:((b-n)%1440+1440)%1440}}
+const fh=s=>{const[a,b]=String(s).split(":");return(+a||0)+"h"+(+b?String(+b).padStart(2,"0"):"")};
+const CAL='<svg viewBox="0 0 24 24" fill="none" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4"/><circle cx="16.5" cy="16.5" r="3.2" fill="#0a0a0a"/><path d="M16.5 15v1.7l1 .6"/></svg>';
+function blocoHH(h){
+ if(!temHH())return"";
+ const pill=`<div class="pill">${CAL}<span>Promoção todos os dias das <b>${esc(fh(D.hhIni))} às ${esc(fh(D.hhFim))}</b></span></div>`;
+ if(!h)return pill;
+ const r=h.rest,t=r>=60?Math.floor(r/60)+"h"+String(r%60).padStart(2,"0"):r+"min";
+ return`<div class="hhtit"><div class="tt"><span>Happy</span><span class="o">Hours</span></div><div class="stk${r<=15?" w":""}"><small>faltam</small><b>${t}</b></div></div>${pill}`}
+
+/* ===== fotos: cada foto é lida uma vez por aparelho e fica guardada ===== */
+const MEM={},PEND={};
+async function carregarFoto(id,f){
+ const k="cf_"+id+"_"+f;
+ if(MEM[k])return MEM[k];
+ try{const v=localStorage.getItem(k);if(v)return MEM[k]=v}catch(e){}
+ if(!PEND[k])PEND[k]=fetch(BASE+"fotos/"+id+"?key="+KEY).then(r=>r.ok?r.json():null).then(j=>{
+  const u=j&&j.fields&&j.fields.img&&j.fields.img.stringValue;if(!u)return"";
+  MEM[k]=u;
+  try{Object.keys(localStorage).filter(x=>x.startsWith("cf_"+id+"_")&&x!==k).forEach(x=>localStorage.removeItem(x));localStorage.setItem(k,u)}catch(e){}
+  return u}).catch(()=>"");
+ return PEND[k]}
+const ioFoto=new IntersectionObserver(es=>es.forEach(e=>{if(!e.isIntersecting)return;ioFoto.unobserve(e.target);
+ const el=e.target;carregarFoto(el.dataset.id,el.dataset.f).then(u=>{if(u)el.style.backgroundImage="url("+u+")"})}),{rootMargin:"250px"});
+
+/* ===== tela ===== */
+function linha(i,hh){
+ const promo=hh&&i.hp>0,
+  pr=promo?`<span class="pr promo"><s>${money(i.p)}</s>${money(i.hp)}</span>`:`<span class="pr">${money(i.p)}</span>`,
+  ph=FOTOS&&i.f?`<span class="ph" data-id="${esc(i.id)}" data-f="${esc(i.f)}"></span>`:"";
+ return`<li class="it${ph?" cf":""}">${ph}<span class="nm">${esc(i.n)}</span><i class="dt"></i>${pr}</li>`}
+
+function mostrar(){
+ if(!D){
+  $("#lista").innerHTML=ERRO?`<div class="erro"><p style="margin:0">${esc(ERRO)}</p><button onclick="ERRO='';$('#lista').innerHTML='<p class=vazio>Carregando…</p>';carregar()">Tentar de novo</button></div>`:$("#lista").innerHTML;
+  return}
+ const r=document.documentElement.style;if(D.cor)r.setProperty("--acc",D.cor);
+ document.title=(D.nome||"Cardápio");$("#nome").textContent=D.nome||"Cardápio";$("#tag").textContent=SLOGAN;
+ $("#lg").innerHTML=D.logo?`<img src="${esc(D.logo)}" alt="">`:"";$("#lg").style.display=D.logo?"grid":"none";
+ const h=hhInfo(),q=nz(Q),mapa=new Map();
+ (D.itens||[]).forEach(i=>{if(q&&!nz(i.n+" "+i.c).includes(q))return;
+  if(!mapa.has(i.c))mapa.set(i.c,[]);mapa.get(i.c).push(i)});
+ const hhItens=h&&!q?(D.itens||[]).filter(i=>i.hp>0):[],secs=[];
+ if(hhItens.length)secs.push({id:"hh",t:"Happy Hour",l:hhItens,hh:1});
+ mapa.forEach((l,c)=>secs.push({id:"c"+secs.length,t:c,l,hh:0}));
+
+ /* Happy Hour no topo */
+ const hb=blocoHH(h);if(ultimo.h!==hb){$("#hh").innerHTML=hb;ultimo.h=hb}
+
+ /* categorias */
+ const ch=secs.map(s=>`<button class="chip${s.hh?" hhc":""}" data-t="s-${s.id}">${esc(s.t)}</button>`).join("");
+ if(ultimo.c!==ch){$("#chips").innerHTML=ch;ultimo.c=ch;
+  $("#chips").querySelectorAll(".chip").forEach(b=>b.onclick=()=>{const e=document.getElementById(b.dataset.t);e&&e.scrollIntoView()})}
+
+ /* lista */
+ const lista=secs.length?secs.map(s=>`<section class="sec${s.hh?" hh":""}" id="s-${s.id}"><h2 class="rb">${esc(s.t)}</h2><ul>${s.l.map(i=>linha(i,!!h)).join("")}</ul></section>`).join(""):
+  `<p class="vazio">${q?"Nada encontrado para “"+esc(Q)+"”.":"O cardápio está vazio por enquanto."}</p>`;
+ if(ultimo.l!==lista){$("#lista").innerHTML=lista;ultimo.l=lista;
+  document.querySelectorAll(".ph").forEach(e=>ioFoto.observe(e));
+  document.querySelectorAll(".sec").forEach(e=>spy.observe(e))}
+
+ $("#aviso").textContent=OFFLINE?"Sem conexão: mostrando a última versão salva.":"";
+ const dt=D._ts?new Date(D._ts):null;
+ $("#rod").textContent="Preços sujeitos a alteração"+(dt?" · atualizado em "+dt.toLocaleDateString("pt-BR",{day:"2-digit",month:"2-digit"})+" às "+dt.toLocaleTimeString("pt-BR",{hour:"2-digit",minute:"2-digit"}):"")}
+
+/* destaca no topo a categoria que está na tela */
+const spy=new IntersectionObserver(es=>es.forEach(e=>{if(!e.isIntersecting)return;
+ document.querySelectorAll(".chip").forEach(c=>{const on=c.dataset.t===e.target.id;c.classList.toggle("on",on);
+  if(on)c.scrollIntoView({inline:"center",block:"nearest",behavior:matchMedia("(prefers-reduced-motion:reduce)").matches?"auto":"smooth"})})}),
+ {rootMargin:"-30% 0px -65% 0px"});
+
+$("#q").addEventListener("input",e=>{Q=e.target.value;mostrar()});
+setInterval(()=>{if(D)mostrar()},30000);   // só recalcula o Happy Hour na tela, não lê nada
+document.addEventListener("visibilitychange",()=>{if(!document.hidden){carregar()}});   // volta ao app: só lê de novo se a cópia tiver mais de 10 min
+carregar();
+</script></body></html>
